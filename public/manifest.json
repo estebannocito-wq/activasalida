@@ -1,0 +1,20 @@
+{
+  "name": "vamosalrio",
+  "short_name": "vamosalrio",
+  "description": "Salidas al río con gente que ya sabés quién es.",
+  "start_url": "/feed",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FBFAF7",
+  "theme_color": "#0EA5E9",
+  "lang": "es-AR",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/vamosalrio_isotipo.png",
+      "sizes": "485x692",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
