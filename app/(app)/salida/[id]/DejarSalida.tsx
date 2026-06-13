@@ -36,7 +36,7 @@ export default function DejarSalida({
       setToast({
         msg: r.penalizado
           ? "Te bajaste. Se registró una cancelación de último momento."
-          : "Te bajaste de la salida.",
+          : "Te bajaste de la actividad.",
         tipo: "info",
       });
       router.refresh();
@@ -50,7 +50,7 @@ export default function DejarSalida({
         onClick={() => setAbierto(true)}
         className="inline-flex h-11 w-full items-center justify-center rounded-2xl border border-tinta/15 bg-white px-6 text-sm font-semibold text-tinta/70 transition active:scale-[0.98]"
       >
-        Dejar la salida
+        Dejar la actividad
       </button>
 
       {abierto ? (
@@ -63,7 +63,7 @@ export default function DejarSalida({
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-tinta/70">
                   Si te bajás ahora se registra una cancelación de último
-                  momento en tu perfil. Los hosts lo van a ver.
+                  momento en tu perfil. Los organizadores lo van a ver.
                 </p>
               </>
             ) : (

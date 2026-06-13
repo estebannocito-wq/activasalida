@@ -6,12 +6,12 @@ import FotoPerfilField from "@/components/FotoPerfilField";
 import { completarPerfilAction } from "./actions";
 
 const INTERESES = [
-  "Lancha / paseo",
-  "Pesca",
-  "Kayak / remo",
-  "Playa / isla",
-  "Asado en isla",
-  "Deportes náuticos",
+  "Actividades / paseos",
+  "Gastronomía",
+  "Deportes",
+  "Aire libre",
+  "Asados / juntadas",
+  "Cultura",
 ];
 
 export default async function CompletarPerfilPage({
@@ -42,7 +42,7 @@ export default async function CompletarPerfilPage({
   return (
     <AuthCard
       titulo="Completá tu perfil"
-      subtitulo="Así la gente sabe quién sos antes de salir al río."
+      subtitulo="Así la gente sabe quién sos antes de sumarse."
     >
       <form
         action={completarPerfilAction}
@@ -125,7 +125,7 @@ export default async function CompletarPerfilPage({
             htmlFor="bio"
             className="mb-1 block text-sm font-medium text-noche"
           >
-            Presentate: ¿quién sos y qué onda tus salidas?
+            Presentate: ¿quién sos y qué onda tus actividades?
           </label>
           <textarea
             id="bio"
@@ -133,14 +133,14 @@ export default async function CompletarPerfilPage({
             rows={4}
             maxLength={200}
             defaultValue={profile?.bio ?? ""}
-            placeholder="Ej: Fanático del río y el mate. Suelo armar asados en la isla los findes."
+            placeholder="Ej: Fanático de las juntadas y el mate. Suelo armar asados los findes."
             className="block w-full rounded-2xl border border-tinta/15 bg-white px-4 py-3 text-base outline-none ring-rio/40 focus:border-rio focus:ring-2"
           />
         </div>
 
         <div>
           <span className="mb-1 block text-sm font-medium text-noche">
-            ¿Qué te gusta hacer en el río?
+            ¿Qué te gusta hacer?
           </span>
           <p className="mb-2 text-xs text-tinta/50">Tocá los que te representen.</p>
           <div className="flex flex-wrap gap-2">

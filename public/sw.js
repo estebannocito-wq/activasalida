@@ -30,15 +30,15 @@ self.addEventListener("push", (event) => {
     data = {};
   }
 
-  const titulo = data.titulo || "vamosalrio";
+  const titulo = data.titulo || "activasalida";
   const cuerpo = data.cuerpo || "";
   const url = data.url || "/feed";
 
   event.waitUntil(
     self.registration.showNotification(titulo, {
       body: cuerpo,
-      icon: "/vamosalrio_isotipo.png",
-      badge: "/vamosalrio_isotipo.png",
+      icon: "/brand/icon-192.png",
+      badge: "/brand/icon-192.png",
       data: { url },
     }),
   );

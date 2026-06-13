@@ -119,7 +119,7 @@ export default async function CalificarPage({
 
       <header className="mt-6">
         <h1 className="text-3xl font-bold tracking-tight text-noche">
-          Calificá la tripulación
+          Calificá al grupo
         </h1>
         <p className="mt-2 text-tinta/70">
           {salida.titulo}

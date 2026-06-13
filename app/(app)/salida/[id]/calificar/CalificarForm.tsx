@@ -104,7 +104,7 @@ export default function CalificarForm({
   if (personas.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-tinta/15 bg-white/50 p-6 text-center text-sm text-tinta/60">
-        No hay nadie a quien calificar en esta salida.
+        No hay nadie a quien calificar en esta actividad.
       </div>
     );
   }
@@ -143,7 +143,7 @@ export default function CalificarForm({
                       : "bg-tinta/10 text-tinta/60"
                   }`}
                 >
-                  {persona.rol === "host" ? "Host" : "Tripulación"}
+                  {persona.rol === "host" ? "Organizador" : "Grupo"}
                 </span>
               </div>
             </div>

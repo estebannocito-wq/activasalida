@@ -43,7 +43,7 @@ export async function agregarAporte(
   if (!n) return { error: "Escribí qué se aporta." };
   if (!CATEGORIAS.includes(categoria)) return { error: "Categoría inválida." };
   if (!(await esHost(supabase, salidaId, user.id))) {
-    return { error: "Solo el host agrega aportes." };
+    return { error: "Solo el organizador agrega aportes." };
   }
 
   const { error } = await supabase
@@ -65,7 +65,7 @@ export async function borrarAporte(
   } = await supabase.auth.getUser();
   if (!user) return { error: "Necesitás iniciar sesión." };
   if (!(await esHost(supabase, salidaId, user.id))) {
-    return { error: "Solo el host borra aportes." };
+    return { error: "Solo el organizador borra aportes." };
   }
 
   const { error } = await supabase
@@ -89,7 +89,7 @@ export async function reclamarAporte(
   } = await supabase.auth.getUser();
   if (!user) return { error: "Necesitás iniciar sesión." };
   if (!(await esMiembro(supabase, salidaId, user.id))) {
-    return { error: "Solo la tripulación confirmada puede reclamar." };
+    return { error: "Solo el grupo confirmado puede reclamar." };
   }
 
   // Solo si sigue sin reclamar (evita pisar a otro).

@@ -60,7 +60,7 @@ export default async function PerfilOtroPage({
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <h1 className="text-2xl font-bold text-noche">
-              {profile.nombre ?? "Marinero/a"}
+              {profile.nombre ?? "Persona"}
             </h1>
             <RangoBadge rango={profile.rango_host} />
             <RangoBadge rango={profile.rango_tripulante} />

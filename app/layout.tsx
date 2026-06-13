@@ -9,21 +9,34 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "vamosalrio · Encontrá tu próxima tripulación",
+  metadataBase: new URL("https://activasalida.com"),
+  title: "activasalida · Tu proximo plan empieza aca",
   description:
-    "Salidas al río con gente que ya sabés quién es. Sin grupo de WhatsApp.",
+    "Planes presenciales con gente que ya sabes quien es. Sin grupo de WhatsApp.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "vamosalrio",
+    title: "activasalida",
   },
-  // Íconos servidos por convención de archivos en /app: favicon.ico, icon.png
-  // y apple-icon.png (el pin del logo).
+  icons: {
+    icon: "/brand/favicon.png",
+    apple: "/brand/apple-icon.png",
+  },
+  openGraph: {
+    title: "activasalida · Tu proximo plan empieza aca",
+    description:
+      "Planes presenciales con gente que ya sabes quien es. Sin grupo de WhatsApp.",
+    url: "https://activasalida.com",
+    siteName: "activasalida",
+    images: ["/brand/og-image.png"],
+    locale: "es_AR",
+    type: "website",
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0EA5E9",
+  themeColor: "#F4552E",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,

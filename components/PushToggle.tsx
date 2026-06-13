@@ -39,7 +39,7 @@ export default function PushToggle() {
       );
       break;
     default: // "default"
-      detalle = "Recibí un aviso cuando pasa algo en tus salidas.";
+      detalle = "Recibí un aviso cuando pasa algo en tus actividades.";
       accion = (
         <button
           type="button"

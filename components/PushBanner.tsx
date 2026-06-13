@@ -49,7 +49,7 @@ export default function PushBanner() {
         </span>
         <p className="min-w-0 flex-1 text-sm leading-snug text-tinta/80">
           Agregá la app a tu inicio y abrila desde el ícono para recibir avisos
-          de tus salidas.
+          de tus actividades.
         </p>
         <button
           type="button"
@@ -69,7 +69,7 @@ export default function PushBanner() {
         🔔
       </span>
       <p className="min-w-0 flex-1 text-sm font-medium leading-snug text-noche">
-        Enterate al toque cuando alguien quiera sumarse a tu salida.
+        Enterate al toque cuando alguien quiera sumarse a tu actividad.
       </p>
       <button
         type="button"

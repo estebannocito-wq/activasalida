@@ -89,10 +89,10 @@ export default async function EditarSalidaPage({
           href={`/salida/${params.id}`}
           className="inline-flex items-center gap-2 text-sm text-tinta/60"
         >
-          <span aria-hidden>←</span> Volver a la salida
+          <span aria-hidden>←</span> Volver a la actividad
         </Link>
         <h1 className="mt-4 text-2xl font-bold tracking-tight text-noche">
-          Editar salida
+          Editar actividad
         </h1>
       </div>
       <NuevaSalidaForm initial={initial} aceptados={count ?? 0} />

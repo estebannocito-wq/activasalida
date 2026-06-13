@@ -50,7 +50,7 @@ export default async function AdminSalidasPage({
   return (
     <div>
       <h2 className="text-lg font-semibold text-noche">
-        Salidas <span className="text-sm font-normal text-tinta/50">({total})</span>
+        Actividades <span className="text-sm font-normal text-tinta/50">({total})</span>
       </h2>
 
       <div className="mt-4 overflow-x-auto rounded-2xl bg-white shadow-sm">
@@ -58,7 +58,7 @@ export default async function AdminSalidasPage({
           <thead>
             <tr className="border-b border-tinta/10 text-[11px] uppercase tracking-wide text-tinta/50">
               <th className="px-4 py-3 font-semibold">Título</th>
-              <th className="px-4 py-3 font-semibold">Host</th>
+              <th className="px-4 py-3 font-semibold">Organizador</th>
               <th className="px-4 py-3 font-semibold">Tipo</th>
               <th className="px-4 py-3 font-semibold">Fecha</th>
               <th className="px-4 py-3 font-semibold">Cupos</th>
@@ -70,7 +70,7 @@ export default async function AdminSalidasPage({
             {rows.length === 0 ? (
               <tr>
                 <td colSpan={7} className="px-4 py-8 text-center text-tinta/50">
-                  No hay salidas.
+                  No hay actividades.
                 </td>
               </tr>
             ) : (

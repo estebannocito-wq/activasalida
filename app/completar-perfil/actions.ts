@@ -65,7 +65,7 @@ export async function completarPerfilAction(formData: FormData) {
   }
   if (edad! < 18) {
     redirect(
-      `/completar-perfil?error=${encodeURIComponent("Tenés que ser mayor de 18 años para usar vamosalrio.")}${errBase}`,
+      `/completar-perfil?error=${encodeURIComponent("Tenés que ser mayor de 18 años para usar activasalida.")}${errBase}`,
     );
   }
   if (!genero || !GENEROS.includes(genero as (typeof GENEROS)[number])) {

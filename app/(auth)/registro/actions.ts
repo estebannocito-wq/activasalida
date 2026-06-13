@@ -64,7 +64,7 @@ export async function signUpAction(formData: FormData) {
   }
   if (edad! < 18) {
     redirect(
-      `/registro?error=${encodeURIComponent("Tenés que ser mayor de 18 años para usar vamosalrio.")}${qs}`,
+      `/registro?error=${encodeURIComponent("Tenés que ser mayor de 18 años para usar activasalida.")}${qs}`,
     );
   }
   if (!genero || !GENEROS.includes(genero as (typeof GENEROS)[number])) {

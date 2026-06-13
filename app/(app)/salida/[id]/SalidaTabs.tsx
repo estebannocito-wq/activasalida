@@ -32,7 +32,7 @@ export default function SalidaTabs({
 
   const TABS: { key: TabKey; label: string; badge?: number }[] = [
     { key: "info", label: "Info" },
-    { key: "tripulacion", label: "Tripulación", badge: pendientesCount },
+    { key: "tripulacion", label: "Grupo", badge: pendientesCount },
     { key: "aportes", label: "Aportes" },
     { key: "chat", label: "Chat" },
   ];

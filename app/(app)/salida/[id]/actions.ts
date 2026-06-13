@@ -67,9 +67,9 @@ export async function solicitarParticipacionAction(
     .eq("id", salidaId)
     .maybeSingle();
 
-  if (salidaError || !salida) return { error: "No encontramos la salida." };
-  if (salida.host_id === user.id) return { error: "Sos el host de esta salida." };
-  if (salida.estado !== "abierta") return { error: "La salida ya no está abierta." };
+  if (salidaError || !salida) return { error: "No encontramos la actividad." };
+  if (salida.host_id === user.id) return { error: "Sos el organizador de esta actividad." };
+  if (salida.estado !== "abierta") return { error: "La actividad ya no está abierta." };
   if ((salida.cupos_ocupados ?? 0) >= salida.cupos_total) return { error: "No quedan cupos." };
 
   // Cierre de inscripción: cierre_inscripcion ?? fecha_hora.
@@ -94,7 +94,7 @@ export async function solicitarParticipacionAction(
       (salida.edad_min != null && edad < salida.edad_min) ||
       (salida.edad_max != null && edad > salida.edad_max)
     ) {
-      return { error: `Esta salida es para personas ${rango}.` };
+      return { error: `Esta actividad es para personas ${rango}.` };
     }
   }
 
@@ -112,7 +112,7 @@ export async function solicitarParticipacionAction(
     .single();
 
   if (error) {
-    if (error.code === "23505") return { error: "Ya pediste sumarte a esta salida." };
+    if (error.code === "23505") return { error: "Ya pediste sumarte a esta actividad." };
     return { error: error.message };
   }
 
@@ -125,7 +125,7 @@ export async function solicitarParticipacionAction(
       supabase.from("profiles").select("nombre").eq("id", user.id).maybeSingle(),
     ]);
     const nombre = prof.data?.nombre ?? "Alguien";
-    const tituloSalida = salida.titulo ?? "tu salida";
+    const tituloSalida = salida.titulo ?? "tu actividad";
     if (hostEmail) {
       await emailNuevaSolicitud({
         to: hostEmail,
@@ -137,7 +137,7 @@ export async function solicitarParticipacionAction(
     // Web push al host, al lado del email. Fire-and-forget: nunca rompe la
     // solicitud (va dentro del mismo try/catch).
     await enviarPushAUsuarios(salida.host_id, {
-      titulo: "Nueva solicitud 🌊",
+      titulo: "Nueva solicitud",
       cuerpo: `${nombre} quiere sumarse a ${tituloSalida}`,
       url: "/notificaciones",
     });
@@ -171,8 +171,8 @@ export async function aceptarSolicitudAction(
     .eq("id", salidaId)
     .maybeSingle();
 
-  if (!salida) return { error: "No encontramos la salida." };
-  if (salida.host_id !== user.id) return { error: "No sos el host." };
+  if (!salida) return { error: "No encontramos la actividad." };
+  if (salida.host_id !== user.id) return { error: "No sos el organizador." };
   if ((salida.cupos_ocupados ?? 0) >= salida.cupos_total) {
     return { error: "Ya no quedan cupos para aceptar." };
   }
@@ -211,15 +211,15 @@ export async function aceptarSolicitudAction(
       if (email) {
         await emailSolicitudAceptada({
           to: email,
-          titulo: salida.titulo ?? "la salida",
+          titulo: salida.titulo ?? "la actividad",
           salidaId,
         });
       }
       // Push al solicitante, al lado del email (fire-and-forget: el try padre
       // ya lo aísla de la acción principal).
       await enviarPushAUsuarios(part.user_id, {
-        titulo: "¡Te aceptaron! 🌊",
-        cuerpo: `Sos parte de ${salida.titulo ?? "la salida"}`,
+        titulo: "¡Te aceptaron!",
+        cuerpo: `Sos parte de ${salida.titulo ?? "la actividad"}`,
         url: `/salida/${salidaId}`,
       });
       await crearNotificacion({
@@ -276,13 +276,13 @@ export async function rechazarSolicitudAction(
       if (email) {
         await emailSolicitudRechazada({
           to: email,
-          titulo: salida.titulo ?? "la salida",
+          titulo: salida.titulo ?? "la actividad",
         });
       }
       // Push al solicitante, con tacto (fire-and-forget vía el try padre).
       await enviarPushAUsuarios(part.user_id, {
         titulo: "Sobre tu solicitud",
-        cuerpo: `Tu pedido para ${salida.titulo ?? "la salida"} no fue aceptado esta vez`,
+        cuerpo: `Tu pedido para ${salida.titulo ?? "la actividad"} no fue aceptado esta vez`,
         url: "/mis-salidas",
       });
       await crearNotificacion({
@@ -316,10 +316,10 @@ export async function dejarSalidaAction(
     .eq("id", salidaId)
     .maybeSingle();
 
-  if (!salida) return { error: "No encontramos la salida." };
-  if (salida.host_id === user.id) return { error: "Sos el host de esta salida." };
+  if (!salida) return { error: "No encontramos la actividad." };
+  if (salida.host_id === user.id) return { error: "Sos el organizador de esta actividad." };
   if (salida.estado !== "abierta" && salida.estado !== "completa") {
-    return { error: "Esta salida ya no admite cambios." };
+    return { error: "Esta actividad ya no admite cambios." };
   }
 
   const { data: part } = await supabase
@@ -330,7 +330,7 @@ export async function dejarSalidaAction(
     .maybeSingle();
 
   if (!part || part.estado !== "aceptado") {
-    return { error: "No estás en la tripulación de esta salida." };
+    return { error: "No estás en el grupo de esta actividad." };
   }
 
   const tarde = new Date(salida.fecha_hora).getTime() <= Date.now() + MS_48H;
@@ -376,8 +376,8 @@ export async function dejarSalidaAction(
     if (hostEmail) {
       await emailInvitadoSeBajo({
         to: hostEmail,
-        invitado: prof.data?.nombre ?? "Un tripulante",
-        titulo: salida.titulo ?? "tu salida",
+        invitado: prof.data?.nombre ?? "Alguien del grupo",
+        titulo: salida.titulo ?? "tu actividad",
         salidaId,
       });
     }
@@ -399,10 +399,10 @@ export async function finalizarSalidaAction(salidaId: string): Promise<Result> {
     .eq("id", salidaId)
     .maybeSingle();
 
-  if (!salida) return { error: "No encontramos la salida." };
-  if (salida.host_id !== user.id) return { error: "No sos el host." };
+  if (!salida) return { error: "No encontramos la actividad." };
+  if (salida.host_id !== user.id) return { error: "No sos el organizador." };
   if (salida.estado !== "abierta" && salida.estado !== "completa") {
-    return { error: "Esta salida ya no se puede finalizar." };
+    return { error: "Esta actividad ya no se puede finalizar." };
   }
 
   const { error } = await supabase
@@ -439,7 +439,7 @@ export async function finalizarSalidaAction(salidaId: string): Promise<Result> {
       if (email) {
         await emailSalidaFinalizada({
           to: email,
-          titulo: salida.titulo ?? "tu salida",
+          titulo: salida.titulo ?? "tu actividad",
           salidaId,
         });
       }
@@ -481,7 +481,7 @@ export async function cancelarSalidaAction(salidaId: string, motivo?: string) {
 
   if (!salida || salida.host_id !== user.id) {
     redirect(
-      `/salida/${salidaId}?error=${encodeURIComponent("No sos el host.")}`,
+      `/salida/${salidaId}?error=${encodeURIComponent("No sos el organizador.")}`,
     );
   }
 
@@ -529,7 +529,7 @@ export async function cancelarSalidaAction(salidaId: string, motivo?: string) {
       if (email) {
         await emailSalidaCancelada({
           to: email,
-          titulo: salida.titulo ?? "la salida",
+          titulo: salida.titulo ?? "la actividad",
         });
       }
     }
@@ -545,12 +545,12 @@ export async function cancelarSalidaAction(salidaId: string, motivo?: string) {
         .select("nombre")
         .eq("id", user.id)
         .maybeSingle();
-      const hostNombre = host?.nombre ?? "El host";
-      const tituloSalida = salida.titulo ?? "la salida";
+      const hostNombre = host?.nombre ?? "El organizador";
+      const tituloSalida = salida.titulo ?? "la actividad";
       const fecha = formatFechaCorta(salida.fecha_hora);
 
       await enviarPushAUsuarios(miembros, {
-        titulo: "Salida cancelada",
+        titulo: "Actividad cancelada",
         cuerpo: `${hostNombre} canceló ${tituloSalida} del ${fecha}`,
         url: "/mis-salidas",
       });
@@ -608,7 +608,7 @@ export async function enviarMensajeChatAction(
     .select("host_id, titulo, estado")
     .eq("id", salidaId)
     .maybeSingle();
-  if (!salida) return { error: "No encontramos la salida." };
+  if (!salida) return { error: "No encontramos la actividad." };
   if (salida.estado === "finalizada" || salida.estado === "cancelada") {
     return { error: "Este chat está cerrado." };
   }
@@ -690,7 +690,7 @@ async function notificarChatTripulacion(
   );
 
   const nombre = prof.data?.nombre ?? "Alguien";
-  const titulo = salidaInfo.data?.titulo ?? "tu salida";
+  const titulo = salidaInfo.data?.titulo ?? "tu actividad";
 
   // El que está mirando el chat no recibe push NI notificación en el centro
   // (ya está leyendo). El resto: notificación in-app (deduplicada por no-leída)

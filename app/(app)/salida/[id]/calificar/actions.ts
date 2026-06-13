@@ -24,7 +24,7 @@ export async function calificarAction(
     .select("host_id, fecha_hora, estado")
     .eq("id", salidaId)
     .maybeSingle();
-  if (!salida) return { error: "No encontramos la salida." };
+  if (!salida) return { error: "No encontramos la actividad." };
 
   const isHost = salida.host_id === user.id;
   let isParticipanteAceptado = false;
@@ -38,14 +38,14 @@ export async function calificarAction(
     isParticipanteAceptado = p?.estado === "aceptado";
   }
   if (!isHost && !isParticipanteAceptado) {
-    return { error: "No participaste de esta salida." };
+    return { error: "No participaste de esta actividad." };
   }
 
   const finalizadaOPasada =
     salida.estado === "finalizada" ||
     new Date(salida.fecha_hora).getTime() < Date.now();
   if (!finalizadaOPasada) {
-    return { error: "Todavía no se puede calificar esta salida." };
+    return { error: "Todavía no se puede calificar esta actividad." };
   }
 
   type Insert = {

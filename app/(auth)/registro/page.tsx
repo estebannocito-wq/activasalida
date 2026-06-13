@@ -11,7 +11,7 @@ export default function RegistroPage({
   return (
     <AuthCard
       titulo="Crear cuenta"
-      subtitulo="Sumate y empezá a armar salidas al río."
+      subtitulo="Tu proximo plan empieza aca."
       footer={
         <>
           ¿Ya tenés cuenta?{" "}

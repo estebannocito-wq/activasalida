@@ -212,7 +212,7 @@ export default function ChatTripulacion({
   return (
     <section ref={rootRef}>
       <h2 className="text-sm font-semibold uppercase tracking-wide text-tinta/60">
-        Chat de la tripulación
+        Chat del grupo
       </h2>
 
       <div className="mt-3 rounded-2xl bg-white p-4 shadow-sm">

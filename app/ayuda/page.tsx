@@ -2,22 +2,22 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Ayuda · vamosalrio",
-  description: "Preguntas frecuentes sobre vamosalrio: cómo crear salidas, sumarte, calificaciones, seguridad y soporte.",
+  title: "Ayuda · activasalida",
+  description: "Preguntas frecuentes sobre activasalida: cómo crear actividades, sumarte, calificaciones, seguridad y soporte.",
 };
 
 const FAQ: { q: string; a: React.ReactNode }[] = [
   {
-    q: "¿Qué es vamosalrio?",
+    q: "¿Qué es activasalida?",
     a: (
       <>
-        Una app para encontrar o armar salidas al río con gente que ya sabés
-        quién es.
+        Una app para encontrar o armar actividades y planes presenciales con
+        gente que ya sabés quién es.
       </>
     ),
   },
   {
-    q: "¿Cómo creo una salida?",
+    q: "¿Cómo creo una actividad?",
     a: (
       <>
         Tocá “Crear”, elegí qué van a hacer, cuándo y dónde, y publicá.
@@ -25,29 +25,29 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
     ),
   },
   {
-    q: "¿Cómo me sumo a una salida?",
+    q: "¿Cómo me sumo a una actividad?",
     a: (
       <>
-        Buscá en el feed, entrá a la salida y pedí sumarte con una breve
-        presentación. El host confirma.
+        Buscá en el feed, entrá a la actividad y pedí sumarte con una breve
+        presentación. El organizador confirma.
       </>
     ),
   },
   {
     q: "¿Es gratis?",
-    a: <>Sí, usar vamosalrio es gratis.</>,
+    a: <>Sí, usar activasalida es gratis.</>,
   },
   {
     q: "¿Cómo funcionan las calificaciones?",
     a: (
       <>
-        Después de cada salida, host e invitados se califican. Eso construye tu
-        reputación.
+        Después de cada actividad, organizador y participantes se califican. Eso
+        construye tu reputación.
       </>
     ),
   },
   {
-    q: "¿Qué pasa si me bajo de una salida?",
+    q: "¿Qué pasa si me bajo de una actividad?",
     a: (
       <>
         Con más de 48hs de anticipación, sin penalidad. Con menos, se registra
@@ -99,7 +99,7 @@ export default function AyudaPage() {
         <header className="mt-6">
           <h1 className="text-3xl font-bold tracking-tight text-noche">Ayuda</h1>
           <p className="mt-2 text-tinta/70">
-            Las preguntas más frecuentes sobre vamosalrio.
+            Las preguntas más frecuentes sobre activasalida.
           </p>
         </header>
 
@@ -156,7 +156,7 @@ export default function AyudaPage() {
             </Link>
           </nav>
           <p className="mt-4 text-xs text-tinta/40">
-            © 2026 vamosalrio · Kappla SRL
+            © 2026 activasalida · Kappla SRL
           </p>
         </footer>
       </div>

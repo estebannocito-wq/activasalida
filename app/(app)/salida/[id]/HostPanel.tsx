@@ -75,7 +75,7 @@ export default function HostPanel({
 }: Props) {
   const avisoAportes =
     aportesSinCubrir > 0
-      ? `Hay ${aportesSinCubrir} ${aportesSinCubrir === 1 ? "aporte sin cubrir" : "aportes sin cubrir"}. Recordá coordinarlo con tu tripulación.`
+      ? `Hay ${aportesSinCubrir} ${aportesSinCubrir === 1 ? "aporte sin cubrir" : "aportes sin cubrir"}. Recordá coordinarlo con tu grupo.`
       : null;
   const [procesandoId, setProcesandoId] = useState<string | null>(null);
   const [cancelando, setCancelando] = useState(false);
@@ -94,8 +94,8 @@ export default function HostPanel({
   function finalizarSalida() {
     if (typeof window === "undefined") return;
     const pregunta = avisoAportes
-      ? `¿Marcar la salida como finalizada? Vas a poder calificar a la tripulación.\n\n${avisoAportes}`
-      : "¿Marcar la salida como finalizada? Vas a poder calificar a la tripulación.";
+      ? `¿Marcar la actividad como finalizada? Vas a poder calificar al grupo.\n\n${avisoAportes}`
+      : "¿Marcar la actividad como finalizada? Vas a poder calificar al grupo.";
     if (!window.confirm(pregunta)) {
       return;
     }
@@ -105,7 +105,7 @@ export default function HostPanel({
       setFinalizando(false);
       if ("error" in r) showToast(r.error, "error");
       else {
-        showToast("Salida finalizada ✓");
+        showToast("Actividad finalizada ✓");
         // Garantiza que el badge ("Finalizada") y la tab se actualicen sin
         // recarga manual, además del revalidatePath del Server Action.
         router.refresh();
@@ -142,7 +142,7 @@ export default function HostPanel({
     if (typeof window === "undefined") return;
     const url = window.location.href;
     const piezas = [
-      `¡Hola tripulación! Confirmados para ${titulo} el ${fechaTexto}`,
+      `¡Hola grupo! Confirmados para ${titulo} el ${fechaTexto}`,
     ];
     if (punto) piezas.push(`en ${punto}`);
     const text = `${piezas.join(" ")}. ¡Los espero ahí! ${url}`;
@@ -165,7 +165,7 @@ export default function HostPanel({
       } catch {
         // NEXT_REDIRECT relanza; cualquier otro error no debería ocurrir.
         setCancelando(false);
-        showToast("No pudimos cancelar la salida.", "error");
+        showToast("No pudimos cancelar la actividad.", "error");
       }
     });
   }
@@ -277,12 +277,12 @@ export default function HostPanel({
       {/* ─── Confirmados (vista host con WA grupo) ──────────────────── */}
       <section>
         <h2 className="text-sm font-semibold uppercase tracking-wide text-tinta/60">
-          Tripulación confirmada
+          Grupo confirmado
         </h2>
 
         {confirmados.length === 0 ? (
           <p className="mt-3 rounded-2xl border border-dashed border-tinta/15 bg-white/50 px-4 py-6 text-center text-sm text-tinta/60">
-            Aceptá a alguien para empezar tu tripulación.
+            Aceptá a alguien para empezar tu grupo.
           </p>
         ) : (
           <>
@@ -353,8 +353,8 @@ export default function HostPanel({
             {puedeFinalizar ? (
               <>
                 <p className="text-sm text-tinta/70">
-                  Cuando vuelvan del río, marcala como finalizada para que la
-                  tripulación pueda calificarse.
+                  Cuando termine, marcala como finalizada para que el
+                  grupo pueda calificarse.
                 </p>
                 {avisoAportes ? (
                   <p className="rounded-xl bg-red-50 px-3 py-2 text-sm font-medium text-red-600 ring-1 ring-inset ring-red-200">
@@ -367,7 +367,7 @@ export default function HostPanel({
                   disabled={finalizando}
                   className="inline-flex h-11 w-full items-center justify-center rounded-2xl bg-rio px-4 text-sm font-semibold text-crema shadow-sm shadow-rio/20 active:scale-[0.98] disabled:opacity-60"
                 >
-                  {finalizando ? "Finalizando…" : "Finalizar salida"}
+                  {finalizando ? "Finalizando…" : "Finalizar actividad"}
                 </button>
               </>
             ) : null}
@@ -375,7 +375,7 @@ export default function HostPanel({
             {puedeCancelar ? (
               <>
                 <p className="text-sm text-tinta/70">
-                  Si la salida ya no va, cancelala. La gente confirmada queda avisada.
+                  Si la actividad ya no va, cancelala. La gente confirmada queda avisada.
                 </p>
                 <button
                   type="button"
@@ -383,7 +383,7 @@ export default function HostPanel({
                   disabled={cancelando}
                   className="inline-flex h-11 w-full items-center justify-center rounded-2xl border border-arena bg-crema px-4 text-sm font-semibold text-arena active:scale-[0.98] disabled:opacity-60"
                 >
-                  {cancelando ? "Cancelando…" : "Cancelar salida"}
+                  {cancelando ? "Cancelando…" : "Cancelar actividad"}
                 </button>
               </>
             ) : null}
@@ -395,9 +395,9 @@ export default function HostPanel({
       {cancelAbierto ? (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-noche/40 p-4 sm:items-center">
           <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-xl">
-            <h3 className="text-lg font-bold text-noche">¿Cancelar la salida?</h3>
+            <h3 className="text-lg font-bold text-noche">¿Cancelar la actividad?</h3>
             <p className="mt-1 text-sm text-tinta/60">
-              Contanos el motivo. La tripulación queda avisada.
+              Contanos el motivo. El grupo queda avisado.
             </p>
 
             <div className="mt-4 space-y-2">
@@ -456,7 +456,7 @@ export default function HostPanel({
                 disabled={cancelando || !cancelMotivo}
                 className="inline-flex h-11 flex-1 items-center justify-center rounded-2xl bg-arena px-4 text-sm font-semibold text-crema active:scale-[0.98] disabled:opacity-50"
               >
-                {cancelando ? "Cancelando…" : "Cancelar salida"}
+                {cancelando ? "Cancelando…" : "Cancelar actividad"}
               </button>
             </div>
           </div>

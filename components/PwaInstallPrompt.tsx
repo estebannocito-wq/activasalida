@@ -106,7 +106,7 @@ export default function PwaInstallPrompt() {
             📲
           </span>
           <p className="min-w-0 flex-1 text-sm font-medium leading-snug text-noche">
-            Agregá vamosalrio a tu pantalla de inicio
+            Agregá activasalida a tu pantalla de inicio
           </p>
           {isIos ? (
             <button
@@ -142,7 +142,7 @@ export default function PwaInstallPrompt() {
           <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-xl">
             <div className="flex items-start justify-between gap-3">
               <h3 className="text-lg font-bold text-noche">
-                Agregá vamosalrio a inicio
+                Agregá activasalida a inicio
               </h3>
               <button
                 type="button"
@@ -162,8 +162,8 @@ export default function PwaInstallPrompt() {
               <PasoInstructivo numero={2} icono={<IconoAgregar />}>
                 Bajá y tocá <strong>“Agregar a inicio”</strong>.
               </PasoInstructivo>
-              <PasoInstructivo numero={3} icono={<span className="text-xl">🌊</span>}>
-                Listo, ya tenés <strong>vamosalrio</strong> como app en tu
+              <PasoInstructivo numero={3} icono={<span className="text-xl">✨</span>}>
+                Listo, ya tenés <strong>activasalida</strong> como app en tu
                 pantalla de inicio.
               </PasoInstructivo>
             </ol>

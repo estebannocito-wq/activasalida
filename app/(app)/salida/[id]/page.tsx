@@ -456,7 +456,7 @@ export default async function SalidaDetallePage({
           <ul className="mt-2 space-y-1 text-sm text-tinta/80">
             {costos.map((c, i) => (
               <li key={i} className="flex justify-between">
-                <span>{c.concepto || "—"}</span>
+                <span>{c.concepto || ","}</span>
                 <span className="font-medium text-noche">
                   {formatPesos(Number(c.monto) || 0)}
                 </span>
@@ -509,7 +509,7 @@ export default async function SalidaDetallePage({
     <div className="space-y-6">
       <section>
         <h2 className="text-sm font-semibold uppercase tracking-wide text-tinta/60">
-          Tripulación confirmada
+          Grupo confirmado
         </h2>
         {confirmados.length === 0 ? (
           <p className="mt-3 rounded-2xl border border-dashed border-tinta/15 bg-white/50 px-4 py-6 text-center text-sm text-tinta/60">
@@ -594,10 +594,10 @@ export default async function SalidaDetallePage({
         💬
       </div>
       <p className="mt-3 text-sm font-medium text-noche">
-        El chat es de la tripulación
+        El chat es del grupo
       </p>
       <p className="mt-1 text-sm text-tinta/60">
-        Sumate a la salida para charlar con el grupo.
+        Sumate a la actividad para charlar con el grupo.
       </p>
     </div>
   );
@@ -626,7 +626,7 @@ export default async function SalidaDetallePage({
 
       {recienCreada ? (
         <div className="mt-4 rounded-2xl bg-rio/10 px-4 py-3 text-sm font-medium text-rio">
-          ✅ Salida publicada. Compartila con tu gente.
+          ✅ Actividad publicada. Compartila con tu gente.
         </div>
       ) : null}
 
@@ -678,7 +678,7 @@ export default async function SalidaDetallePage({
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={host.foto_url}
-                alt={host.nombre ?? "Host"}
+                alt={host.nombre ?? "Organizador"}
                 className="h-full w-full object-cover"
               />
             ) : (
@@ -687,7 +687,7 @@ export default async function SalidaDetallePage({
           </div>
           <div className="min-w-0 flex-1">
             <div className="text-xs uppercase tracking-wide text-tinta/40">
-              Host
+              Organizador
             </div>
             <div className="flex items-center gap-1 text-sm font-semibold text-noche">
               <span className="truncate">{host.nombre ?? "Anónimo"}</span>
@@ -724,7 +724,7 @@ export default async function SalidaDetallePage({
             disabled
             className="inline-flex h-12 w-full cursor-default items-center justify-center rounded-2xl bg-tinta/10 px-6 text-base font-semibold text-tinta/50"
           >
-            Salida cancelada
+            Actividad cancelada
           </button>
         </div>
       ) : isFinalizadaOPasada ? (
@@ -734,7 +734,7 @@ export default async function SalidaDetallePage({
               href={`/salida/${salida!.id}/calificar`}
               className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-rio px-6 text-base font-semibold text-crema shadow-sm shadow-rio/20 active:scale-[0.98]"
             >
-              Calificá a la tripulación →
+              Calificá al grupo →
             </Link>
           ) : usuarioParticipo && yaCalifico ? (
             <button
@@ -742,7 +742,7 @@ export default async function SalidaDetallePage({
               disabled
               className="inline-flex h-12 w-full cursor-default items-center justify-center rounded-2xl bg-tinta/10 px-6 text-base font-semibold text-tinta/50"
             >
-              Ya calificaste esta salida ✓
+              Ya calificaste esta actividad ✓
             </button>
           ) : (
             <button
@@ -750,7 +750,7 @@ export default async function SalidaDetallePage({
               disabled
               className="inline-flex h-12 w-full cursor-default items-center justify-center rounded-2xl bg-tinta/10 px-6 text-base font-semibold text-tinta/50"
             >
-              Salida finalizada
+              Actividad finalizada
             </button>
           )}
         </div>
@@ -760,7 +760,7 @@ export default async function SalidaDetallePage({
             href={`/registro?redirect=${encodeURIComponent(`/salida/${salida!.id}`)}`}
             className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-rio px-6 text-base font-semibold text-crema shadow-sm shadow-rio/20 active:scale-[0.98]"
           >
-            Sumate a la tripulación
+            Sumate al grupo
           </Link>
         </div>
       ) : inscripcionCerrada && !estadoParticipacion ? (
@@ -780,7 +780,7 @@ export default async function SalidaDetallePage({
             disabled
             className="inline-flex h-12 w-full cursor-default items-center justify-center rounded-2xl bg-tinta/10 px-5 text-center text-sm font-semibold text-tinta/50"
           >
-            Esta salida es para personas {rangoEdadTexto}.
+            Esta actividad es para personas {rangoEdadTexto}.
           </button>
         </div>
       ) : cuposCompletos && !estadoParticipacion ? (

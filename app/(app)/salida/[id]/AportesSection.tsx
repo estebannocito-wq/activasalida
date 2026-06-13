@@ -29,8 +29,8 @@ type Props = {
 const BLOQUES = [
   {
     cat: "host",
-    titulo: "Lo que pone el host",
-    vacio: "El host todavía no cargó nada.",
+    titulo: "Lo que pone el organizador",
+    vacio: "El organizador todavía no cargó nada.",
   },
   {
     cat: "repartir",
@@ -117,7 +117,7 @@ export default function AportesSection({
               onChange={(e) => setCat(e.target.value)}
               className="flex-1 rounded-2xl border border-tinta/15 bg-crema px-3 py-2.5 text-sm text-tinta/80 outline-none focus:border-rio"
             >
-              <option value="host">Lo pone el host</option>
+              <option value="host">Lo pone el organizador</option>
               <option value="repartir">Por repartir</option>
               <option value="cada_uno">Cada uno lo suyo</option>
             </select>

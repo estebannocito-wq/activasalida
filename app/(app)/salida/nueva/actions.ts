@@ -85,7 +85,7 @@ function parseSalidaForm(
   }
 
   if (categoria === "otro" && !tipoOtro) {
-    return { error: "Contanos qué tipo de salida es." };
+    return { error: "Contanos qué tipo de actividad es." };
   }
 
   // "Otro" exige especificar cuál. Como transporte tiene CHECK en la DB,
@@ -95,7 +95,7 @@ function parseSalidaForm(
     const otroTxt = String(formData.get("transporte_otro") ?? "")
       .trim()
       .slice(0, 60);
-    if (!otroTxt) return { error: "Contanos cómo llegan al agua." };
+    if (!otroTxt) return { error: "Contanos cómo se llega." };
     descripcionFinal = [`Cómo llegamos: ${otroTxt}`, descripcion]
       .filter(Boolean)
       .join("\n\n");
@@ -115,7 +115,7 @@ function parseSalidaForm(
     }
     if (c.getTime() >= fecha.getTime()) {
       return {
-        error: "El cierre de inscripción tiene que ser antes del inicio de la salida.",
+        error: "El cierre de inscripción tiene que ser antes del inicio de la actividad.",
       };
     }
     cierreInscripcion = c.toISOString();
@@ -269,7 +269,7 @@ export async function createSalidaAction(formData: FormData): Promise<Result> {
     .single();
 
   if (error || !data) {
-    return { error: error?.message ?? "No pudimos publicar la salida." };
+    return { error: error?.message ?? "No pudimos publicar la actividad." };
   }
 
   redirect(`/salida/${data.id}?nueva=1`);
@@ -294,15 +294,15 @@ export async function updateSalidaAction(
     .eq("id", salidaId)
     .maybeSingle();
 
-  if (!salida) return { error: "No encontramos la salida." };
+  if (!salida) return { error: "No encontramos la actividad." };
   if (salida.host_id !== user.id) {
-    return { error: "Solo el organizador puede editar la salida." };
+    return { error: "Solo el organizador puede editar la actividad." };
   }
   if (salida.estado !== "abierta") {
-    return { error: "Solo se puede editar una salida abierta." };
+    return { error: "Solo se puede editar una actividad abierta." };
   }
   if (new Date(salida.fecha_hora).getTime() < Date.now()) {
-    return { error: "No se puede editar una salida que ya pasó." };
+    return { error: "No se puede editar una actividad que ya pasó." };
   }
 
   const parsed = parseSalidaForm(formData);

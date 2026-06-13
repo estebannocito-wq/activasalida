@@ -3,49 +3,49 @@
 type RangoInfo = { emoji: string; label: string; className: string; title: string };
 
 const RANGOS: Record<string, RangoInfo> = {
-  // ── Host ──────────────────────────────────────────────────────────────
+  // ── Organizador ─────────────────────────────────────────────────────────
   anfitrion_junior: {
     emoji: "🌱",
-    label: "Anfitrión Junior",
+    label: "Organizador",
     className: "bg-emerald-100 text-emerald-700",
-    title: "Organizó su primera salida",
+    title: "Organizo su primera actividad",
   },
   capitan: {
-    emoji: "⚓",
-    label: "Capitán",
+    emoji: "🔥",
+    label: "Activo",
     className: "bg-noche text-crema",
-    title: "≥3 salidas finalizadas como host y buena reputación",
+    title: "3 o mas actividades finalizadas como organizador y buena reputacion",
   },
   capitan_maestro: {
     emoji: "⭐",
-    label: "Capitán Maestro",
+    label: "Estrella",
     className: "bg-amber-600 text-white",
-    title: "≥10 salidas finalizadas como host y muy buena reputación",
+    title: "10 o mas actividades finalizadas como organizador y muy buena reputacion",
   },
   gran_capitan: {
     emoji: "🏆",
-    label: "Gran Capitán",
+    label: "Estrella",
     className: "bg-yellow-400 text-noche",
-    title: "≥25 salidas finalizadas como host y reputación excelente",
+    title: "25 o mas actividades finalizadas como organizador y reputacion excelente",
   },
-  // ── Tripulante ────────────────────────────────────────────────────────
+  // ── Participante ──────────────────────────────────────────────────────────
   tripulante: {
-    emoji: "🌊",
-    label: "Tripulante",
+    emoji: "👋",
+    label: "Sumate",
     className: "bg-rio/15 text-rio",
-    title: "Se sumó a su primera salida",
+    title: "Se sumo a su primera actividad",
   },
   tripulante_experto: {
-    emoji: "🌊",
-    label: "Tripulante Experto",
+    emoji: "🙌",
+    label: "Habitue",
     className: "bg-rio text-crema",
-    title: "≥5 salidas finalizadas como invitado y buena reputación",
+    title: "5 o mas actividades finalizadas como invitado y buena reputacion",
   },
   tripulante_veterano: {
-    emoji: "🏄",
-    label: "Tripulante Veterano",
+    emoji: "🤙",
+    label: "Crack del plan",
     className: "bg-sky-800 text-crema",
-    title: "≥15 salidas finalizadas como invitado y muy buena reputación",
+    title: "15 o mas actividades finalizadas como invitado y muy buena reputacion",
   },
 };
 

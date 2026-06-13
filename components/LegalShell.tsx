@@ -48,7 +48,7 @@ export default function LegalShell({ titulo, actualizado, borrador, children }: 
               Ayuda
             </Link>
           </nav>
-          <p className="mt-4 text-xs text-tinta/40">© 2026 vamosalrio · Kappla SRL</p>
+          <p className="mt-4 text-xs text-tinta/40">© 2026 activasalida · Kappla SRL</p>
         </footer>
       </div>
     </main>

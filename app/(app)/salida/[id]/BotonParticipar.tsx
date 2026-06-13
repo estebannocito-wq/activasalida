@@ -79,7 +79,7 @@ export default function BotonParticipar({ salidaId, estadoInicial }: Props) {
           maxLength={MAX_MENSAJE}
           value={mensaje}
           onChange={(e) => setMensaje(e.target.value)}
-          placeholder="Ej: ¡Hola! Me copa el río, soy buena onda y llevo el mate. ¿Hay lugar?"
+          placeholder="Ej: ¡Hola! Me copa el plan, soy buena onda y llevo el mate. ¿Hay lugar?"
           className="block w-full rounded-2xl border border-tinta/15 bg-white px-4 py-3 text-base outline-none ring-rio/40 focus:border-rio focus:ring-2"
         />
         <div className="mt-1 flex items-center justify-between text-xs text-tinta/50">

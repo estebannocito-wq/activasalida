@@ -1,29 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
+import BrandWordmark from "@/components/BrandWordmark";
 
 /* ── Marca ──────────────────────────────────────────────────────────────── */
 
 function Logo() {
-  // Header sobre fondo azul: isotipo (pin) + wordmark tipeado en blanco.
   return (
     <span className="flex items-center gap-2">
-      <Image
-        src="/vamosalrio_isotipo.png"
-        alt=""
-        aria-hidden
-        width={40}
-        height={40}
-        priority
-        className="h-10 w-auto"
-      />
-      <span className="text-xl font-bold tracking-tight text-crema">
-        vamosalrio
-      </span>
+      <BrandWordmark variant="light" className="text-xl" />
     </span>
   );
 }
 
-/* Ola divisoria: transiciona de una sección a la de abajo (color = fill). */
+/* Onda divisoria: transiciona de una sección a la de abajo (color = fill). */
 function Ola({ fill, className = "" }: { fill: string; className?: string }) {
   return (
     <svg
@@ -43,9 +32,9 @@ function Ola({ fill, className = "" }: { fill: string; className?: string }) {
 const PASOS = [
   {
     n: "1",
-    titulo: "Creá o sumate a una salida",
+    titulo: "Crea o sumate a una actividad",
     texto:
-      "Armá la tuya en un minuto (fecha, punto, qué llevar) o pedí sumarte a la de otro con una presentación.",
+      "Arma la tuya en un minuto (fecha, lugar, que llevar) o pedi sumarte a la de otro con una presentacion.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
         <circle cx="12" cy="12" r="9" />
@@ -55,9 +44,9 @@ const PASOS = [
   },
   {
     n: "2",
-    titulo: "El host confirma la tripulación",
+    titulo: "El organizador confirma el grupo",
     texto:
-      "El organizador ve quién quiere ir, lee su presentación y elige con quién sale. Nadie se sube sin su OK.",
+      "El organizador ve quien quiere ir, lee su presentacion y elige con quien sale. Nadie se suma sin su OK.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
         <path d="M15 11l2 2 4-4" />
@@ -68,33 +57,31 @@ const PASOS = [
   },
   {
     n: "3",
-    titulo: "Al río, y después se califican",
+    titulo: "Al plan, y despues se califican",
     texto:
-      "Punto, horario y costos compartidos, todo en un lugar. Al volver, host e invitados se califican.",
+      "Lugar, horario y costos compartidos, todo en un lugar. Al volver, organizador e invitados se califican.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
-        <path d="M3 14c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2" />
-        <path d="M5 13V6a1 1 0 0 1 1-1h6l5 4v4" />
-        <path d="M12 5V2" />
+        <path d="M5 13l4 4L19 7" />
       </svg>
     ),
   },
 ];
 
 const TIPOS = [
-  { emoji: "🚤", label: "Lancha / paseo" },
-  { emoji: "🎣", label: "Pesca" },
-  { emoji: "🛶", label: "Kayak / remo" },
-  { emoji: "🏖️", label: "Playa / isla" },
-  { emoji: "🔥", label: "Asado en isla" },
-  { emoji: "🏄", label: "Deportes náuticos" },
+  { emoji: "⚽", label: "Deporte" },
+  { emoji: "☕", label: "Juntada" },
+  { emoji: "🎬", label: "Cine/Teatro" },
+  { emoji: "✈️", label: "Viaje/Escapada" },
+  { emoji: "🥾", label: "Caminata/Trekking" },
+  { emoji: "🎲", label: "Juegos" },
 ];
 
 const CONFIANZA = [
   {
     titulo: "Perfiles reales",
     texto:
-      "Foto, presentación e Instagram. Mirás quién es cada uno antes de salir.",
+      "Foto, presentacion e Instagram. Miras quien es cada uno antes de sumarte.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
         <circle cx="12" cy="8" r="4" />
@@ -103,9 +90,9 @@ const CONFIANZA = [
     ),
   },
   {
-    titulo: "El host elige su tripulación",
+    titulo: "El organizador elige su grupo",
     texto:
-      "Cada salida la arma alguien que decide a quién suma. No es un grupo abierto.",
+      "Cada actividad la arma alguien que decide a quien suma. No es un grupo abierto.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -116,7 +103,7 @@ const CONFIANZA = [
   {
     titulo: "Calificaciones bidireccionales",
     texto:
-      "Después de cada salida, host e invitados se puntúan. La buena onda construye reputación.",
+      "Despues de cada actividad, organizador e invitados se puntuan. La buena onda construye reputacion.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
         <path d="M12 3l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.4l6-.9L12 3z" />
@@ -124,9 +111,9 @@ const CONFIANZA = [
     ),
   },
   {
-    titulo: "Badge Capitán",
+    titulo: "Rango Estrella",
     texto:
-      "Quienes organizan seguido y mantienen buena reputación se ganan el ⚓ Capitán.",
+      "Quienes organizan seguido y mantienen buena reputacion se ganan el rango Estrella.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
         <path d="M12 2 4 5v6c0 5 3.4 8.4 8 11 4.6-2.6 8-6 8-11V5l-8-3z" />
@@ -137,9 +124,9 @@ const CONFIANZA = [
 ];
 
 const CAPTURAS = [
-  { archivo: "/landing/feed.png", titulo: "El feed", sub: "Salidas abiertas cerca tuyo" },
-  { archivo: "/landing/salida.png", titulo: "La salida", sub: "Punto en el mapa, costos, tripulación" },
-  { archivo: "/landing/perfil.png", titulo: "El perfil", sub: "Reputación, referencias y Capitán" },
+  { archivo: "/landing/feed.png", titulo: "El feed", sub: "Actividades abiertas cerca tuyo" },
+  { archivo: "/landing/salida.png", titulo: "La actividad", sub: "Lugar en el mapa, costos, grupo" },
+  { archivo: "/landing/perfil.png", titulo: "El perfil", sub: "Reputacion, referencias y rangos" },
 ];
 
 /* ── Página ─────────────────────────────────────────────────────────────── */
@@ -154,16 +141,15 @@ export default function LandingPage() {
           className="absolute inset-0 -z-20"
           style={{
             background:
-              "linear-gradient(160deg, #0C4A6E 0%, #0b5b8a 45%, #0EA5E9 100%)",
+              "linear-gradient(160deg, #1E2A78 0%, #2c3a9a 45%, #F4552E 100%)",
           }}
         />
-        {/* sol ámbar */}
         <div
           aria-hidden
           className="absolute right-4 top-8 -z-10 h-40 w-40 sm:right-24 sm:top-14 sm:h-56 sm:w-56"
           style={{
             background:
-              "radial-gradient(circle at 50% 50%, rgba(245,158,11,0.95) 0%, rgba(245,158,11,0.55) 42%, rgba(245,158,11,0) 70%)",
+              "radial-gradient(circle at 50% 50%, rgba(244,85,46,0.95) 0%, rgba(244,85,46,0.55) 42%, rgba(244,85,46,0) 70%)",
           }}
         />
 
@@ -174,24 +160,25 @@ export default function LandingPage() {
               href="/login"
               className="text-sm font-semibold text-crema/90 transition hover:text-crema"
             >
-              Iniciar sesión
+              Iniciar sesion
             </Link>
           </header>
 
           <div className="mt-16 max-w-2xl sm:mt-24">
             <span className="inline-flex items-center gap-2 rounded-full bg-crema/15 px-3 py-1 text-xs font-medium text-crema ring-1 ring-inset ring-crema/20 backdrop-blur">
               <span className="h-1.5 w-1.5 rounded-full bg-arena" />
-              Salidas al río · todo el año
+              Planes presenciales · todo el año
             </span>
 
             <h1 className="mt-6 text-balance text-5xl font-bold leading-[1.02] tracking-tight sm:text-7xl">
-              Encontrá tu próxima tripulación.
+              Tu proximo plan empieza aca.
             </h1>
 
             <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-crema/85 sm:text-xl">
-              Un paseo en lancha, un día de playa, pesca o kayak. Salidas al
-              río con gente que ya sabés quién es. Armás la tuya o te sumás a la
-              de otro, ves quién va antes de salir, y se califican después.{" "}
+              Un partido, una juntada, una escapada o una caminata. Planes
+              presenciales con gente que ya sabes quien es. Armas el tuyo o te
+              sumas al de otro, ves quien va antes de salir, y se califican
+              despues.{" "}
               <span className="font-semibold text-crema">
                 Sin grupo de WhatsApp.
               </span>
@@ -200,7 +187,7 @@ export default function LandingPage() {
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/registro"
-                className="inline-flex h-13 items-center justify-center rounded-2xl bg-arena px-7 py-3.5 text-base font-semibold text-noche shadow-lg shadow-arena/25 transition hover:brightness-105 active:scale-[0.98]"
+                className="inline-flex h-13 items-center justify-center rounded-2xl bg-arena px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-arena/25 transition hover:brightness-105 active:scale-[0.98]"
               >
                 Crear cuenta
               </Link>
@@ -208,13 +195,13 @@ export default function LandingPage() {
                 href="/feed"
                 className="inline-flex h-13 items-center justify-center rounded-2xl border border-crema/30 bg-crema/10 px-7 py-3.5 text-base font-semibold text-crema backdrop-blur transition hover:bg-crema/20 active:scale-[0.98]"
               >
-                Explorar salidas
+                Explorar actividades
               </Link>
             </div>
           </div>
         </div>
 
-        <Ola fill="#FBFAF7" className="absolute inset-x-0 bottom-0" />
+        <Ola fill="#FFF7F4" className="absolute inset-x-0 bottom-0" />
       </section>
 
       {/* ═══ 2. EL PROBLEMA ════════════════════════════════════════════════ */}
@@ -224,16 +211,17 @@ export default function LandingPage() {
             El problema de siempre
           </span>
           <h2 className="mt-4 text-balance text-3xl font-bold leading-tight tracking-tight text-noche sm:text-5xl">
-            Se viene el finde y querés ir al río.
+            Se viene el finde y queres hacer algo.
           </h2>
           <div className="mt-6 max-w-3xl text-pretty text-lg leading-relaxed text-tinta/70">
             <p>
               Coordinar es un quilombo: los grupos de WhatsApp se pierden, los
-              planes se caen, y nunca sabés bien con quién vas a terminar.{" "}
+              planes se caen, y nunca sabes bien con quien vas a terminar.{" "}
               <span className="font-semibold text-tinta">
                 Te conectamos con la gente antes de salir
               </span>{" "}
-              para ir en lancha, a la playa, de pesca o de camping.
+              para cualquier plan presencial: deporte, juntada, viaje o lo que se
+              te ocurra.
             </p>
           </div>
         </div>
@@ -244,10 +232,10 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
           <div className="max-w-2xl">
             <span className="text-xs font-semibold uppercase tracking-[0.18em] text-rio">
-              Cómo funciona
+              Como funciona
             </span>
             <h2 className="mt-4 text-balance text-3xl font-bold tracking-tight text-noche sm:text-4xl">
-              De la idea al agua, en tres pasos.
+              De la idea al plan, en tres pasos.
             </h2>
           </div>
 
@@ -282,13 +270,13 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
           <div className="max-w-2xl">
             <span className="text-xs font-semibold uppercase tracking-[0.18em] text-arena">
-              Para qué salís
+              Para que salis
             </span>
             <h2 className="mt-4 text-balance text-3xl font-bold tracking-tight text-noche sm:text-4xl">
-              Cada salida tiene su onda.
+              Cada actividad tiene su onda.
             </h2>
             <p className="mt-3 text-pretty text-lg text-tinta/65">
-              Elegís el tipo cuando armás la tuya, y filtrás por el que te copa
+              Elegis el tipo cuando armas la tuya, y filtras por el que te copa
               en el feed.
             </p>
           </div>
@@ -305,8 +293,8 @@ export default function LandingPage() {
                   style={{
                     background:
                       i % 2 === 0
-                        ? "radial-gradient(circle, rgba(14,165,233,0.16) 0%, rgba(14,165,233,0) 70%)"
-                        : "radial-gradient(circle, rgba(245,158,11,0.18) 0%, rgba(245,158,11,0) 70%)",
+                        ? "radial-gradient(circle, rgba(244,85,46,0.16) 0%, rgba(244,85,46,0) 70%)"
+                        : "radial-gradient(circle, rgba(30,42,120,0.16) 0%, rgba(30,42,120,0) 70%)",
                   }}
                 />
                 <span className="text-4xl">{t.emoji}</span>
@@ -319,18 +307,18 @@ export default function LandingPage() {
 
       {/* ═══ 5. CONFIANZA (el corazón) ═════════════════════════════════════ */}
       <section className="relative isolate overflow-hidden text-crema">
-        <Ola fill="#0C4A6E" className="rotate-180" />
+        <Ola fill="#1E2A78" className="rotate-180" />
         <div
           aria-hidden
           className="absolute inset-0 -z-20"
-          style={{ background: "#0C4A6E" }}
+          style={{ background: "#1E2A78" }}
         />
         <div
           aria-hidden
           className="absolute -left-20 top-1/3 -z-10 h-72 w-72 rounded-full"
           style={{
             background:
-              "radial-gradient(circle, rgba(14,165,233,0.35) 0%, rgba(14,165,233,0) 70%)",
+              "radial-gradient(circle, rgba(244,85,46,0.35) 0%, rgba(244,85,46,0) 70%)",
           }}
         />
 
@@ -340,11 +328,12 @@ export default function LandingPage() {
               Confianza
             </span>
             <h2 className="mt-4 text-balance text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
-              El río con desconocidos da cosa. Por eso lo armamos al revés.
+              Salir con desconocidos da cosa. Por eso lo armamos al reves.
             </h2>
             <p className="mt-5 text-pretty text-lg leading-relaxed text-crema/80">
-              Acá no subís a un bote con cualquiera. Sabés quién es cada uno,
-              quién organiza, y cómo le fue a la gente en sus salidas anteriores.
+              Aca no te sumas a un plan con cualquiera. Sabes quien es cada uno,
+              quien organiza, y como le fue a la gente en sus actividades
+              anteriores.
             </p>
           </div>
 
@@ -370,7 +359,7 @@ export default function LandingPage() {
           </ul>
         </div>
 
-        <Ola fill="#FBFAF7" className="absolute inset-x-0 bottom-0" />
+        <Ola fill="#FFF7F4" className="absolute inset-x-0 bottom-0" />
       </section>
 
       {/* ═══ 6. ASÍ SE VE POR DENTRO ═══════════════════════════════════════ */}
@@ -378,10 +367,10 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
           <div className="max-w-2xl">
             <span className="text-xs font-semibold uppercase tracking-[0.18em] text-rio">
-              Así se ve por dentro
+              Asi se ve por dentro
             </span>
             <h2 className="mt-4 text-balance text-3xl font-bold tracking-tight text-noche sm:text-4xl">
-              Simple, en el teléfono, mientras tomás unos mates.
+              Simple, en el telefono, mientras tomas unos mates.
             </h2>
           </div>
 
@@ -415,7 +404,7 @@ export default function LandingPage() {
           className="relative isolate mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] px-6 py-16 text-center text-crema sm:py-20"
           style={{
             background:
-              "linear-gradient(135deg, #0C4A6E 0%, #0EA5E9 70%, #2bb6f2 100%)",
+              "linear-gradient(135deg, #1E2A78 0%, #F4552E 70%, #ff7a57 100%)",
           }}
         >
           <div
@@ -423,20 +412,20 @@ export default function LandingPage() {
             className="absolute -right-10 -top-10 -z-10 h-44 w-44 rounded-full"
             style={{
               background:
-                "radial-gradient(circle, rgba(245,158,11,0.6) 0%, rgba(245,158,11,0) 70%)",
+                "radial-gradient(circle, rgba(244,85,46,0.6) 0%, rgba(244,85,46,0) 70%)",
             }}
           />
           <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-5xl">
-            ¿Listo para salir al río?
+            ¿Listo para tu proximo plan?
           </h2>
           <p className="mx-auto mt-4 max-w-md text-pretty text-lg leading-relaxed text-crema/85">
-            Creá tu cuenta y armá tu primera salida hoy. Sumás tu tripulación en
+            Crea tu cuenta y arma tu primera actividad hoy. Sumas tu grupo en
             minutos.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/registro"
-              className="inline-flex h-13 w-full items-center justify-center rounded-2xl bg-arena px-8 py-3.5 text-base font-semibold text-noche shadow-lg shadow-arena/25 transition hover:brightness-105 active:scale-[0.98] sm:w-auto"
+              className="inline-flex h-13 w-full items-center justify-center rounded-2xl bg-arena px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-arena/25 transition hover:brightness-105 active:scale-[0.98] sm:w-auto"
             >
               Crear cuenta
             </Link>
@@ -451,16 +440,10 @@ export default function LandingPage() {
       <footer className="bg-crema">
         <div className="mx-auto max-w-6xl border-t border-tinta/10 px-6 py-10">
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
-            <Image
-              src="/vamosalrio_logo_full.png"
-              alt="vamosalrio"
-              width={320}
-              height={120}
-              className="h-20 w-auto"
-            />
+            <BrandWordmark variant="dark" className="text-3xl" />
             <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-tinta/60">
               <Link href="/terminos" className="hover:text-rio">
-                Términos
+                Terminos
               </Link>
               <Link href="/privacidad" className="hover:text-rio">
                 Privacidad
@@ -474,7 +457,7 @@ export default function LandingPage() {
             </nav>
           </div>
           <p className="mt-6 text-xs text-tinta/40">
-            Hecho en Rosario, junto al Paraná. · © 2026 vamosalrio · Kappla SRL
+            Hecho en Rosario, Argentina. · © 2026 activasalida · Kappla SRL
           </p>
         </div>
       </footer>

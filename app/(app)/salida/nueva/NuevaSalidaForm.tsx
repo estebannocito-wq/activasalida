@@ -39,22 +39,21 @@ function isoToLocalInput(iso: string): string {
 type CostoRow = { id: string; concepto: string; monto: string };
 
 const TRANSPORTES = [
-  { value: "lancha_publica", label: "Lancha pública" },
-  { value: "lancha_privada", label: "Lancha privada" },
-  { value: "lancha_taxi", label: "Lancha taxi" },
-  { value: "kayak", label: "Kayak" },
+  { value: "auto", label: "Auto" },
+  { value: "transporte_publico", label: "Transporte publico" },
   { value: "a_pie", label: "A pie" },
+  { value: "bici", label: "Bici" },
   { value: "otro", label: "Otro" },
 ] as const;
 
 const PASOS = [
-  "¿Qué van a hacer?",
-  "¿Cómo llegan al agua?",
-  "¿Cuándo y dónde se juntan?",
-  "Lo básico",
+  "¿Que van a hacer?",
+  "¿Como llegan?",
+  "¿Cuando y donde se juntan?",
+  "Lo basico",
   "Cupos y costos",
   "Opciones",
-  "¿Todo listo para zarpar?",
+  "¿Todo listo para publicar?",
 ];
 
 const TOTAL_PASOS = PASOS.length;
@@ -237,22 +236,22 @@ export default function NuevaSalidaForm({
   // Devuelve un mensaje de error si el paso no está completo, o null si está OK.
   function validarPaso(n: number): string | null {
     if (n === 1) {
-      if (!categoria) return "Elegí qué tipo de salida es.";
+      if (!categoria) return "Elegi que tipo de actividad es.";
       if (categoria === "otro" && !tipoOtro.trim())
-        return "Contanos qué tipo de salida es.";
+        return "Contanos que tipo de actividad es.";
     }
     if (n === 2) {
-      if (!transporte) return "Elegí cómo llegan al agua.";
+      if (!transporte) return "Elegi como llegan.";
       if (transporte === "otro" && !transporteOtro.trim())
-        return "Contanos cómo llegan al agua.";
+        return "Contanos como llegan.";
     }
     if (n === 3) {
-      if (!fechaHora) return "Elegí fecha y hora.";
+      if (!fechaHora) return "Elegi fecha y hora.";
       if (Number.isNaN(new Date(fechaHora).getTime()))
-        return "La fecha no es válida.";
+        return "La fecha no es valida.";
     }
     if (n === 4) {
-      if (!titulo.trim()) return "Ponele un título a la salida.";
+      if (!titulo.trim()) return "Ponele un titulo a la actividad.";
     }
     if (n === 6) {
       if (cierreOpcion === "custom") {
@@ -260,12 +259,12 @@ export default function NuevaSalidaForm({
         const c = new Date(cierreCustom);
         if (Number.isNaN(c.getTime())) return "La fecha de cierre no es válida.";
         if (fechaHora && c.getTime() >= new Date(fechaHora).getTime())
-          return "El cierre tiene que ser antes del inicio de la salida.";
+          return "El cierre tiene que ser antes del inicio de la actividad.";
       }
       if (!sinRestriccionEdad) {
-        if (edadMin < 18) return "La edad mínima tiene que ser 18 o más.";
+        if (edadMin < 18) return "La edad minima tiene que ser 18 o mas.";
         if (edadMin > edadMax)
-          return "La edad mínima no puede ser mayor a la máxima.";
+          return "La edad minima no puede ser mayor a la maxima.";
       }
     }
     return null;
@@ -386,7 +385,7 @@ export default function NuevaSalidaForm({
                     }`}
                   >
                     <span className="text-4xl">
-                      {CATEGORIA_EMOJI[opt.value] ?? "🌊"}
+                      {CATEGORIA_EMOJI[opt.value] ?? "📌"}
                     </span>
                     <span
                       className={`text-sm font-semibold ${
@@ -415,7 +414,7 @@ export default function NuevaSalidaForm({
                   value={tipoOtro}
                   onChange={(e) => setTipoOtro(e.target.value)}
                   maxLength={60}
-                  placeholder="Ej: avistaje de aves, fotografía, limpieza de costa…"
+                  placeholder="Ej: taller, recital, cumpleaños, mercado…"
                   className="block w-full rounded-2xl border border-tinta/15 bg-white px-4 py-3 text-base outline-none ring-rio/40 focus:border-rio focus:ring-2"
                 />
               </div>
@@ -461,7 +460,7 @@ export default function NuevaSalidaForm({
                   value={transporteOtro}
                   onChange={(e) => setTransporteOtro(e.target.value)}
                   maxLength={60}
-                  placeholder="Ej: moto de agua, velero, canoa…"
+                  placeholder="Ej: combi, remis, moto…"
                   className="block w-full rounded-2xl border border-tinta/15 bg-white px-4 py-3 text-base outline-none ring-rio/40 focus:border-rio focus:ring-2"
                 />
               </div>
@@ -500,11 +499,11 @@ export default function NuevaSalidaForm({
                 type="text"
                 value={puntoEncuentro}
                 onChange={(e) => setPuntoEncuentro(e.target.value)}
-                placeholder='Ej: "Bajada Sargento Cabral"'
+                placeholder='Ej: "Plaza San Martin"'
                 className="block w-full rounded-2xl border border-tinta/15 bg-white px-4 py-3 text-base outline-none ring-rio/40 focus:border-rio focus:ring-2"
               />
               <p className="mb-2 mt-3 text-xs text-tinta/50">
-                Tocá el mapa para marcar el punto exacto. Podés arrastrar el pin
+                Toca el mapa para marcar el punto exacto. Podes arrastrar el pin
                 para ajustarlo.
               </p>
               <MapPicker
@@ -522,8 +521,8 @@ export default function NuevaSalidaForm({
               ) : null}
               {puntoEncuentro.trim() && (lat == null || lng == null) ? (
                 <p className="mt-2 rounded-xl bg-arena/10 px-3 py-2 text-xs leading-relaxed text-arena">
-                  📍 Marcá el punto en el mapa para que tus invitados sepan cómo
-                  llegar, sobre todo si no tiene dirección exacta.
+                  📍 Marca el punto en el mapa para que tus invitados sepan como
+                  llegar, sobre todo si no tiene direccion exacta.
                 </p>
               ) : null}
             </div>
@@ -546,7 +545,7 @@ export default function NuevaSalidaForm({
                 value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
                 maxLength={120}
-                placeholder='Ej: "Domingo en Charigüé"'
+                placeholder='Ej: "Futbol 5 del domingo"'
                 className="block w-full rounded-2xl border border-tinta/15 bg-white px-4 py-3 text-base outline-none ring-rio/40 focus:border-rio focus:ring-2"
               />
             </div>
@@ -570,7 +569,7 @@ export default function NuevaSalidaForm({
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={portadaVista}
-                    alt="Portada de la salida"
+                    alt="Portada de la actividad"
                     className="aspect-[16/9] w-full object-cover"
                   />
                   <div className="absolute right-2 top-2 flex gap-2">
@@ -579,6 +578,7 @@ export default function NuevaSalidaForm({
                       onClick={() => portadaInputRef.current?.click()}
                       disabled={portadaProcesando}
                       className="rounded-full bg-noche/70 px-3 py-1.5 text-xs font-semibold text-crema backdrop-blur disabled:opacity-60"
+                      aria-label="Cambiar foto de portada"
                     >
                       Cambiar
                     </button>
@@ -617,7 +617,7 @@ export default function NuevaSalidaForm({
                 </button>
               )}
               <p className="mt-1.5 text-xs text-tinta/50">
-                Sin foto se muestra una portada de color según el tipo de salida.
+                Sin foto se muestra una portada de color segun el tipo de actividad.
               </p>
             </div>
 
@@ -645,7 +645,7 @@ export default function NuevaSalidaForm({
                 maxLength={MAX_DESC}
                 value={descripcion}
                 onChange={(e) => setDescripcion(e.target.value)}
-                placeholder="Contale a la tripulación de qué va la salida"
+                placeholder="Contale al grupo de que va la actividad"
                 className="block w-full resize-none rounded-2xl border border-tinta/15 bg-white px-4 py-3 text-base outline-none ring-rio/40 focus:border-rio focus:ring-2"
               />
             </div>
@@ -707,7 +707,7 @@ export default function NuevaSalidaForm({
               </div>
               {costos.length === 0 ? (
                 <p className="rounded-2xl border border-dashed border-tinta/15 bg-crema px-4 py-3 text-sm text-tinta/50">
-                  Sin costos compartidos. Si hay nafta, lancha o algo a dividir,
+                  Sin costos compartidos. Si hay nafta, entradas o algo a dividir,
                   sumalo.
                 </p>
               ) : (
@@ -822,7 +822,7 @@ export default function NuevaSalidaForm({
                     {minimoView == null ? "Sin mínimo" : minimoView}
                   </div>
                   <div className="text-[11px] uppercase tracking-wide text-tinta/50">
-                    {minimoView == null ? "se sale igual" : "para zarpar"}
+                    {minimoView == null ? "se hace igual" : "para confirmar"}
                   </div>
                 </div>
                 <button
@@ -863,7 +863,7 @@ export default function NuevaSalidaForm({
                 }
                 className="block w-full rounded-2xl border border-tinta/15 bg-white px-4 py-3 text-base outline-none ring-rio/40 focus:border-rio focus:ring-2"
               >
-                <option value="inicio">Hasta que empiece la salida</option>
+                <option value="inicio">Hasta que empiece la actividad</option>
                 <option value="1d">1 día antes</option>
                 <option value="2d">2 días antes</option>
                 <option value="3d">3 días antes</option>
@@ -951,7 +951,7 @@ export default function NuevaSalidaForm({
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-semibold text-noche">
-                  ¿Salida privada?
+                  ¿Actividad privada?
                 </span>
                 <span className="mt-0.5 block text-xs leading-relaxed text-tinta/60">
                   Solo la gente con el link puede verla y sumarse. No aparece en
@@ -1042,7 +1042,7 @@ export default function NuevaSalidaForm({
               label="Cierre inscripción"
               value={
                 cierreOpcion === "inicio"
-                  ? "Hasta que empiece la salida"
+                  ? "Hasta que empiece la actividad"
                   : cierreOpcion === "custom"
                     ? cierreCustom
                       ? new Date(cierreCustom).toLocaleString("es-AR", {
@@ -1131,7 +1131,7 @@ export default function NuevaSalidaForm({
                 : "Publicando…"
               : isEdit
                 ? "Guardar cambios"
-                : "Publicar salida"}
+                : "Publicar actividad"}
           </button>
         )}
       </div>

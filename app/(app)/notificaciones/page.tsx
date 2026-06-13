@@ -33,7 +33,7 @@ export default async function NotificacionesPage() {
         <h1 className="text-3xl font-bold tracking-tight text-noche">
           Notificaciones
         </h1>
-        <p className="mt-2 text-tinta/70">Lo último de tus salidas.</p>
+        <p className="mt-2 text-tinta/70">Lo último de tus actividades.</p>
       </header>
 
       <NotificacionesClient items={items} />

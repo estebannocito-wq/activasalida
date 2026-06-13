@@ -25,7 +25,7 @@ export default function PortadaCover({
       // eslint-disable-next-line @next/next/no-img-element
       <img
         src={imagenPortada}
-        alt={titulo ? `Portada de ${titulo}` : "Portada de la salida"}
+        alt={titulo ? `Portada de ${titulo}` : "Portada de la actividad"}
         className={`h-full w-full object-cover ${className}`}
       />
     );

@@ -145,7 +145,7 @@ export default async function AdminUsuariosPage({
               <th className="px-4 py-3 font-semibold">Nombre</th>
               <th className="px-4 py-3 font-semibold">Email</th>
               <th className="px-4 py-3 font-semibold">Registro</th>
-              <th className="px-4 py-3 font-semibold">Host</th>
+              <th className="px-4 py-3 font-semibold">Organizador</th>
               <th className="px-4 py-3 font-semibold">Invitado</th>
               <th className="px-4 py-3 font-semibold">Rango</th>
               <th className="px-4 py-3 font-semibold">Estado</th>

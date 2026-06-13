@@ -13,13 +13,13 @@ alter table public.salidas
   check (
     categoria is null
     or categoria in (
-      'lancha_paseo',
-      'pesca',
-      'kayak_remo',
-      'playa_isla',
-      'asado_isla',
-      'deportes_nauticos',
-      'campamento',
+      'deporte',
+      'juntada',
+      'cine_teatro',
+      'viaje',
+      'caminata',
+      'juegos',
+      'after',
       'otro'
     )
   );

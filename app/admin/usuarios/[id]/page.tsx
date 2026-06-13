@@ -109,11 +109,11 @@ export default async function AdminUsuarioDetalle({
         </p>
       ) : null}
 
-      <Seccion titulo={`Salidas como host (${comoHost.length})`}>
+      <Seccion titulo={`Actividades como organizador (${comoHost.length})`}>
         <ListaSalidas items={comoHost} />
       </Seccion>
 
-      <Seccion titulo={`Salidas como invitado (${comoInvitado.length})`}>
+      <Seccion titulo={`Actividades como invitado (${comoInvitado.length})`}>
         <ListaSalidas items={comoInvitado} />
       </Seccion>
 

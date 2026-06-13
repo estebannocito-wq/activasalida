@@ -17,7 +17,7 @@ function buildMensaje({
   cuposLibres,
 }: Props) {
   const piezas = [
-    `¡Mirá esta salida al río! ${titulo}`,
+    `¡Mirá esta actividad! ${titulo}`,
     `el ${fechaTexto}`,
   ];
   if (punto) piezas.push(`en ${punto}`);
@@ -51,7 +51,7 @@ export function IconoCompartirHeader(props: Props) {
     <button
       type="button"
       onClick={onClick}
-      aria-label="Compartir salida"
+      aria-label="Compartir actividad"
       className="grid h-10 w-10 place-items-center rounded-full bg-white text-noche shadow-sm"
     >
       <svg
@@ -108,7 +108,7 @@ export function BotonesCompartir({
     return (
       <div className="mt-6 rounded-2xl border border-rio/30 bg-rio/5 p-4">
         <div className="flex items-center gap-2 text-sm font-semibold text-noche">
-          🔒 Salida privada
+          🔒 Actividad privada
         </div>
         <p className="mt-1 text-sm text-tinta/70">
           Compartí el link con quien quieras invitar. No aparece en el feed.

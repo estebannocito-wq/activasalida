@@ -38,7 +38,7 @@ export async function adminCancelarSalidaAction(
     .select("titulo, estado")
     .eq("id", salidaId)
     .maybeSingle();
-  if (!salida) return { error: "No encontramos la salida." };
+  if (!salida) return { error: "No encontramos la actividad." };
 
   const { error } = await ctx.admin
     .from("salidas")
@@ -57,7 +57,7 @@ export async function adminCancelarSalidaAction(
       if (email) {
         await emailSalidaCancelada({
           to: email,
-          titulo: salida.titulo ?? "la salida",
+          titulo: salida.titulo ?? "la actividad",
         });
       }
     }

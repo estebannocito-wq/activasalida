@@ -55,7 +55,7 @@ export default function GestionarSalida({
     if (typeof window === "undefined") return;
     if (
       !window.confirm(
-        "¿Marcar la salida como finalizada? Vas a poder calificar a la tripulación.",
+        "¿Marcar la actividad como finalizada? Vas a poder calificar al grupo.",
       )
     ) {
       return;
@@ -67,7 +67,7 @@ export default function GestionarSalida({
       setFinalizando(false);
       if ("error" in r) showToast(r.error, "error");
       else {
-        showToast("Salida finalizada ✓");
+        showToast("Actividad finalizada ✓");
         router.refresh();
       }
     });
@@ -85,7 +85,7 @@ export default function GestionarSalida({
       } catch {
         // NEXT_REDIRECT relanza; cualquier otro error no debería ocurrir.
         setCancelando(false);
-        showToast("No pudimos cancelar la salida.", "error");
+        showToast("No pudimos cancelar la actividad.", "error");
       }
     });
   }
@@ -122,7 +122,7 @@ export default function GestionarSalida({
               onClick={() => setAbierto(false)}
               className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-noche transition hover:bg-crema"
             >
-              <span aria-hidden>✏️</span> Editar salida
+              <span aria-hidden>✏️</span> Editar actividad
             </Link>
           ) : null}
           {puedeFinalizar ? (
@@ -133,7 +133,7 @@ export default function GestionarSalida({
               className="flex w-full items-center gap-2 border-t border-tinta/5 px-4 py-3 text-left text-sm font-medium text-rio transition hover:bg-crema disabled:opacity-60"
             >
               <span aria-hidden>🏁</span>{" "}
-              {finalizando ? "Finalizando…" : "Finalizar salida"}
+              {finalizando ? "Finalizando…" : "Finalizar actividad"}
             </button>
           ) : null}
           {puedeCancelar ? (
@@ -145,7 +145,7 @@ export default function GestionarSalida({
               }}
               className="flex w-full items-center gap-2 border-t border-tinta/5 px-4 py-3 text-left text-sm font-medium text-arena transition hover:bg-crema"
             >
-              <span aria-hidden>🚫</span> Cancelar salida
+              <span aria-hidden>🚫</span> Cancelar actividad
             </button>
           ) : null}
         </div>
@@ -155,9 +155,9 @@ export default function GestionarSalida({
       {cancelAbierto ? (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-noche/40 p-4 sm:items-center">
           <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-xl">
-            <h3 className="text-lg font-bold text-noche">¿Cancelar la salida?</h3>
+            <h3 className="text-lg font-bold text-noche">¿Cancelar la actividad?</h3>
             <p className="mt-1 text-sm text-tinta/60">
-              Contanos el motivo. La tripulación queda avisada.
+              Contanos el motivo. El grupo queda avisado.
             </p>
 
             <div className="mt-4 space-y-2">
@@ -209,7 +209,7 @@ export default function GestionarSalida({
                 disabled={cancelando || !cancelMotivo}
                 className="inline-flex h-11 flex-1 items-center justify-center rounded-2xl bg-arena px-4 text-sm font-semibold text-crema active:scale-[0.98] disabled:opacity-50"
               >
-                {cancelando ? "Cancelando…" : "Cancelar salida"}
+                {cancelando ? "Cancelando…" : "Cancelar actividad"}
               </button>
             </div>
           </div>

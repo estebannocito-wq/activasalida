@@ -68,7 +68,7 @@ const items: Item[] = [
   },
   {
     href: "/mis-salidas",
-    label: "Mis salidas",
+    label: "Mis actividades",
     match: (p) => p.startsWith("/mis-salidas"),
     icon: (active) => (
       <svg

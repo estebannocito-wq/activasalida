@@ -59,7 +59,7 @@ export default function MisSalidasTabs({
   return (
     <div className="px-6 pb-6 pt-10">
       <header>
-        <h1 className="text-3xl font-bold tracking-tight text-noche">Mis salidas</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-noche">Mis actividades</h1>
         <p className="mt-2 text-tinta/70">Las que armaste y a las que te sumaste.</p>
       </header>
 
@@ -118,8 +118,8 @@ function Organizadas({ items }: { items: MiSalida[] }) {
   if (items.length === 0) {
     return (
       <EmptyState
-        mensaje="Todavía no organizaste salidas."
-        cta={{ href: "/salida/nueva", label: "Crear una salida" }}
+        mensaje="Todavía no organizaste actividades."
+        cta={{ href: "/salida/nueva", label: "Crear una actividad" }}
       />
     );
   }
@@ -161,8 +161,8 @@ function Participando({ items }: { items: MiSalida[] }) {
   if (items.length === 0) {
     return (
       <EmptyState
-        mensaje="Todavía no te sumaste a ninguna salida."
-        cta={{ href: "/feed", label: "Explorar salidas" }}
+        mensaje="Todavía no te sumaste a ninguna actividad."
+        cta={{ href: "/feed", label: "Explorar actividades" }}
       />
     );
   }
@@ -205,7 +205,7 @@ function Solicitudes({ items }: { items: MiSalida[] }) {
     return (
       <EmptyState
         mensaje="No tenés solicitudes pendientes."
-        cta={{ href: "/feed", label: "Explorar salidas" }}
+        cta={{ href: "/feed", label: "Explorar actividades" }}
       />
     );
   }

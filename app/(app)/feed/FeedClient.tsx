@@ -57,8 +57,8 @@ const FECHAS: { value: FechaFilter; label: string }[] = [
 
 const TRANSPORTES: { value: TransporteFilter; label: string }[] = [
   { value: "todas", label: "Todas" },
-  { value: "lancha", label: "Lancha" },
-  { value: "kayak", label: "Kayak" },
+  { value: "lancha", label: "Auto" },
+  { value: "kayak", label: "Transporte público" },
   { value: "a_pie", label: "A pie" },
 ];
 
@@ -235,10 +235,10 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
     return (
       <div className="mt-10 rounded-2xl border border-dashed border-tinta/20 bg-white/50 p-8 text-center">
         <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-rio/15 text-2xl">
-          🌊
+          🎉
         </div>
         <h2 className="mt-4 text-lg font-semibold text-noche">
-          Todavía no hay salidas
+          Todavía no hay actividades
         </h2>
         <p className="mt-2 text-sm text-tinta/60">
           Sé el primero en armar una y la gente se anota.
@@ -247,7 +247,7 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
           href="/salida/nueva"
           className="mt-6 inline-flex h-11 items-center justify-center rounded-2xl bg-rio px-5 text-sm font-semibold text-crema"
         >
-          Abrí la primera salida
+          Abrí la primera actividad
         </Link>
       </div>
     );
@@ -355,7 +355,7 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
 
       <p className="mt-4 text-sm font-medium text-tinta/60">
         {conDistancia.length}{" "}
-        {conDistancia.length === 1 ? "salida" : "salidas"}
+        {conDistancia.length === 1 ? "actividad" : "actividades"}
         {cercaActivo ? " · más cercanas primero" : ""}
       </p>
 
@@ -363,7 +363,7 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
         fecha === "finde" ? (
           <div className="mt-3 rounded-2xl border border-dashed border-tinta/15 bg-white/50 px-4 py-8 text-center">
             <p className="text-sm text-tinta/60">
-              No hay salidas este finde. Mirá las de esta semana.
+              No hay actividades este finde. Mirá las de esta semana.
             </p>
             <button
               type="button"
@@ -376,7 +376,7 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
         ) : (
           <div className="mt-3 rounded-2xl border border-dashed border-tinta/15 bg-white/50 px-4 py-8 text-center">
             <p className="text-sm text-tinta/60">
-              Ninguna salida coincide con esos filtros.
+              Ninguna actividad coincide con esos filtros.
             </p>
             <button
               type="button"
@@ -605,7 +605,7 @@ function SalidaCard({
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={host.foto_url}
-                alt={host?.nombre ?? "Host"}
+                alt={host?.nombre ?? "Organizador"}
                 className="h-full w-full object-cover"
               />
             ) : (

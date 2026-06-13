@@ -28,7 +28,7 @@ export default async function AdminDashboard() {
 
   const cards = [
     { label: "Usuarios registrados", value: usuarios.count ?? 0 },
-    { label: "Salidas abiertas ahora", value: abiertas.count ?? 0 },
+    { label: "Actividades abiertas ahora", value: abiertas.count ?? 0 },
     { label: "Nuevos (últimos 7 días)", value: nuevos.count ?? 0 },
     { label: "Reportes sin resolver", value: reportes.count ?? 0 },
   ];

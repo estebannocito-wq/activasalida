@@ -9,11 +9,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        rio: "#0EA5E9",
-        noche: "#0C4A6E",
-        arena: "#F59E0B",
-        crema: "#FBFAF7",
-        tinta: "#111827",
+        primary: { DEFAULT: "#F4552E", dark: "#D8431F" },
+        secondary: { DEFAULT: "#1E2A78" },
+        rio: "#F4552E",
+        noche: "#1E2A78",
+        arena: "#F4552E",
+        crema: "#FFF7F4",
+        tinta: "#1F2933",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],

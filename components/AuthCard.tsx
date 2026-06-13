@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import BrandWordmark from "@/components/BrandWordmark";
 
 type Props = {
   titulo: string;
@@ -35,14 +35,9 @@ export default function AuthCard({
         </Link>
 
         {logo ? (
-          <Image
-            src="/vamosalrio_logo_full.png"
-            alt="vamosalrio"
-            width={1007}
-            height={897}
-            priority
-            className="mx-auto mt-10 mb-8 block h-28 w-auto max-w-[60%] object-contain"
-          />
+          <div className="mx-auto mt-10 mb-8 flex h-28 items-center justify-center">
+            <BrandWordmark variant="dark" className="max-h-28 text-4xl" />
+          </div>
         ) : null}
 
         <div className={logo ? "" : "mt-10"}>

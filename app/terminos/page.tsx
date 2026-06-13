@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import LegalShell, { Clausula } from "@/components/LegalShell";
 
 export const metadata: Metadata = {
-  title: "Términos y Condiciones · vamosalrio",
+  title: "Términos y Condiciones · activasalida",
   description:
-    "Términos y condiciones de uso de vamosalrio, operada por Kappla SRL.",
+    "Términos y condiciones de uso de activasalida, operada por Kappla SRL.",
 };
 
 export default function TerminosPage() {
@@ -15,7 +15,7 @@ export default function TerminosPage() {
     >
       <Clausula numero={1} titulo="Aceptación de los términos">
         <p>
-          Al crear una cuenta, acceder o utilizar vamosalrio (en adelante, “la
+          Al crear una cuenta, acceder o utilizar activasalida (en adelante, “la
           Plataforma”), operada por <strong>Kappla SRL</strong> (CUIT
           30-71451107-2, con domicilio en Rosario, Provincia de Santa Fe,
           Argentina), usted (en adelante, “el Usuario”) declara haber leído,
@@ -27,11 +27,10 @@ export default function TerminosPage() {
 
       <Clausula numero={2} titulo="Qué es la Plataforma (y qué no es)">
         <p>
-          vamosalrio es{" "}
+          activasalida es{" "}
           <strong>una herramienta tecnológica de intermediación</strong> que
-          permite a sus Usuarios publicar, descubrir y coordinar salidas y
-          actividades recreativas vinculadas al río y a la vida social, y
-          conectarse entre sí.
+          permite a sus Usuarios publicar, descubrir y coordinar actividades y
+          planes presenciales recreativos y sociales, y conectarse entre sí.
         </p>
         <p>
           <strong>
@@ -45,12 +44,12 @@ export default function TerminosPage() {
             <strong>
               No organiza, no promueve, no dirige, no supervisa ni participa
             </strong>{" "}
-            en ninguna de las salidas, actividades o encuentros publicados por
+            en ninguna de las actividades, planes o encuentros publicados por
             los Usuarios.
           </li>
           <li>
             <strong>No es propietaria, no opera, no alquila ni controla</strong>{" "}
-            embarcaciones, vehículos, inmuebles ni equipamiento de ningún tipo.
+            vehículos, inmuebles ni equipamiento de ningún tipo.
           </li>
           <li>
             <strong>No es parte</strong> de ningún acuerdo, encuentro o relación
@@ -68,8 +67,8 @@ export default function TerminosPage() {
           </li>
         </ul>
         <p>
-          Toda salida es organizada por un Usuario (“Anfitrión”) por su propia
-          cuenta y riesgo. Los demás Usuarios que se suman (“Tripulantes”) lo
+          Toda actividad es organizada por un Usuario (“Organizador”) por su
+          propia cuenta y riesgo. Los demás Usuarios que se suman al grupo lo
           hacen voluntariamente y bajo su propia responsabilidad.
         </p>
       </Clausula>
@@ -109,9 +108,9 @@ export default function TerminosPage() {
       <Clausula numero={5} titulo="Asunción de riesgos">
         <p>
           <strong>
-            El Usuario reconoce y acepta expresamente que toda salida o
-            actividad coordinada a través de la Plataforma conlleva riesgos
-            inherentes
+            El Usuario reconoce y acepta expresamente que toda actividad
+            presencial organizada entre usuarios a través de la Plataforma
+            conlleva riesgos inherentes
           </strong>{" "}
           (incluyendo, sin limitarse a, riesgos físicos, accidentes, lesiones,
           daños materiales o, en casos extremos, riesgo de vida) y que participa{" "}
@@ -121,33 +120,28 @@ export default function TerminosPage() {
           </strong>
         </p>
         <h3 className="pt-1 font-semibold text-noche">
-          5.1. Actividades acuáticas y náuticas
+          5.1. Actividades presenciales entre usuarios
         </h3>
         <p>
-          El Usuario comprende que las actividades en el río y en el agua
-          (navegación, kayak, natación, pesca, deportes náuticos, estadía en
-          islas, etc.) implican{" "}
-          <strong>riesgos serios y propios de cada actividad.</strong> En
-          particular:
+          El Usuario comprende que las actividades presenciales organizadas
+          entre usuarios (deportes, salidas, viajes, juntadas, caminatas y otros
+          planes) implican{" "}
+          <strong>riesgos propios de cada actividad.</strong> En particular:
         </p>
         <ul className="list-disc space-y-1 pl-5">
           <li>
-            La conducción de embarcaciones está sujeta a la normativa de la{" "}
-            <strong>Prefectura Naval Argentina (PNA)</strong>. Es
-            responsabilidad exclusiva del Anfitrión y/o del propietario de la
-            embarcación contar con la habilitación correspondiente, el
-            equipamiento de seguridad obligatorio (chalecos salvavidas, etc.) y
-            los seguros que la ley exija.
+            Es responsabilidad exclusiva del Organizador y de cada participante
+            contar con las habilitaciones, el equipamiento y los seguros que la
+            actividad y la ley exijan.
           </li>
           <li>
-            La Plataforma <strong>no verifica</strong> habilitaciones náuticas,
-            estado de embarcaciones, condiciones meteorológicas ni el
-            cumplimiento de las normas de seguridad.
+            La Plataforma <strong>no verifica</strong> condiciones de seguridad,
+            equipamiento, estado de los lugares ni el cumplimiento de las normas
+            aplicables a cada actividad.
           </li>
           <li>
             Cada Usuario es responsable de evaluar las condiciones, su propia
-            aptitud física (incluida la capacidad de nadar) y de tomar las
-            precauciones que correspondan.
+            aptitud física y de tomar las precauciones que correspondan.
           </li>
         </ul>
         <p>
@@ -199,9 +193,9 @@ export default function TerminosPage() {
 
       <Clausula numero={9} titulo="Cancelaciones, ausencias y reputación">
         <p>
-          La Plataforma ofrece mecanismos de cancelación, cuórum mínimo y
-          registro de cancelaciones tardías con el fin de fomentar la buena
-          conducta de la comunidad. Estos mecanismos son{" "}
+          La Plataforma ofrece mecanismos de cancelación, cupo mínimo y registro
+          de cancelaciones tardías con el fin de fomentar la buena conducta de
+          la comunidad. Estos mecanismos son{" "}
           <strong>herramientas de organización entre Usuarios</strong> y no
           generan obligación legal alguna a cargo de Kappla SRL. El
           incumplimiento de un Usuario (no presentarse, cancelar a último
@@ -224,7 +218,7 @@ export default function TerminosPage() {
           Kappla SRL <strong>no será responsable</strong> por daños directos,
           indirectos, incidentales o consecuentes derivados de: (a) el uso o la
           imposibilidad de uso de la Plataforma; (b) la conducta de cualquier
-          Usuario, dentro o fuera de la Plataforma; (c) las salidas, actividades
+          Usuario, dentro o fuera de la Plataforma; (c) las actividades, planes
           o encuentros coordinados a través de la Plataforma; (d) la veracidad
           de la información publicada por los Usuarios.
         </p>

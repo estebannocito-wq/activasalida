@@ -83,49 +83,41 @@ export function rangoEdadLabel(
 }
 
 export const TRANSPORTE_LABEL: Record<string, string> = {
-  lancha_publica: "Lancha pública",
-  lancha_privada: "Lancha privada",
-  lancha_taxi: "Lancha taxi",
-  kayak: "Kayak",
+  auto: "Auto",
+  transporte_publico: "Transporte publico",
   a_pie: "A pie",
+  bici: "Bici",
   otro: "Otro",
 };
 
-export const CATEGORIAS: { value: string; label: string }[] = [
-  { value: "lancha_paseo", label: "Lancha / paseo" },
-  { value: "pesca", label: "Pesca" },
-  { value: "kayak_remo", label: "Kayak / remo" },
-  { value: "playa_isla", label: "Playa / isla" },
-  { value: "asado_isla", label: "Asado en isla" },
-  { value: "deportes_nauticos", label: "Deportes náuticos" },
-  { value: "campamento", label: "Campamento" },
-  { value: "otro", label: "Otro" },
+export const CATEGORIAS: { value: string; label: string; emoji: string }[] = [
+  { value: "deporte", label: "Deporte", emoji: "⚽" },
+  { value: "juntada", label: "Juntada", emoji: "☕" },
+  { value: "cine_teatro", label: "Cine/Teatro", emoji: "🎬" },
+  { value: "viaje", label: "Viaje/Escapada", emoji: "✈️" },
+  { value: "caminata", label: "Caminata/Trekking", emoji: "🥾" },
+  { value: "juegos", label: "Juegos", emoji: "🎲" },
+  { value: "after", label: "After", emoji: "🎉" },
+  { value: "otro", label: "Otro", emoji: "📌" },
 ];
 
 export const CATEGORIA_LABEL: Record<string, string> = Object.fromEntries(
   CATEGORIAS.map((c) => [c.value, c.label]),
 );
 
-// Ícono (emoji) por tipo de salida — usado en el wizard y en el fallback de
+// Ícono (emoji) por tipo de actividad — usado en el wizard y en el fallback de
 // portada cuando no hay foto cargada.
-export const CATEGORIA_EMOJI: Record<string, string> = {
-  lancha_paseo: "🚤",
-  pesca: "🎣",
-  kayak_remo: "🛶",
-  playa_isla: "🏖️",
-  asado_isla: "🔥",
-  deportes_nauticos: "🏄",
-  campamento: "⛺",
-  otro: "✨",
-};
+export const CATEGORIA_EMOJI: Record<string, string> = Object.fromEntries(
+  CATEGORIAS.map((c) => [c.value, c.emoji]),
+);
 
 export function categoriaEmoji(categoria: string | null | undefined): string {
-  if (!categoria) return "🌊";
-  return CATEGORIA_EMOJI[categoria] ?? "🌊";
+  if (!categoria) return "📌";
+  return CATEGORIA_EMOJI[categoria] ?? "📌";
 }
 
-// Texto a mostrar para el tipo de salida. Para 'otro', usa el texto libre
-// que cargó el host (tipo_otro); si falta, cae a "Otro".
+// Texto a mostrar para el tipo de actividad. Para 'otro', usa el texto libre
+// que cargo el organizador (tipo_otro); si falta, cae a "Otro".
 export function categoriaLabel(
   categoria: string | null | undefined,
   tipoOtro?: string | null,

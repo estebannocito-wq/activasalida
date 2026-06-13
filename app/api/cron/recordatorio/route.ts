@@ -83,7 +83,7 @@ export async function GET(request: Request) {
       if (email) {
         await emailRecordatorio({
           to: email,
-          titulo: s.titulo ?? "tu salida",
+          titulo: s.titulo ?? "tu actividad",
           fechaTexto,
           punto: s.punto_encuentro_texto,
           salidaId: s.id,
@@ -105,21 +105,23 @@ export async function GET(request: Request) {
       const min = s.participantes_minimos;
       const partes = [
         `Tenés <strong>${conf}</strong> ${
-          conf === 1 ? "tripulante confirmado" : "tripulantes confirmados"
+          conf === 1
+            ? "persona confirmada en el grupo"
+            : "personas confirmadas en el grupo"
         }.`,
       ];
       if (min != null) {
         partes.push(
           conf >= min
             ? "✅ ¡Ya tienen cuórum!"
-            : `⚠️ Todavía no llegaste al mínimo de ${min} participantes. Si querés cancelar sin penalidad, podés hacerlo desde la salida.`,
+            : `⚠️ Todavía no llegaste al mínimo de ${min} participantes. Si querés cancelar sin penalidad, podés hacerlo desde la actividad.`,
         );
       }
       const hostEmail = await emailDe(s.host_id);
       if (hostEmail) {
         await emailRecordatorio({
           to: hostEmail,
-          titulo: s.titulo ?? "tu salida",
+          titulo: s.titulo ?? "tu actividad",
           fechaTexto,
           punto: s.punto_encuentro_texto,
           salidaId: s.id,

@@ -6,22 +6,22 @@ import { completarOnboardingAction } from "./actions";
 
 const SLIDES = [
   {
-    icon: "🌊",
-    titulo: "Bienvenido a vamosalrio 🌊",
+    icon: "📍",
+    titulo: "Descubrí planes cerca tuyo",
     cuerpo:
-      "Encontrá tu próxima tripulación. Sumate a salidas al río en Rosario o creá la tuya.",
+      "Tu próximo plan empieza acá. Sumate a actividades en tu zona o creá la tuya.",
   },
   {
-    icon: "🧭",
-    titulo: "¿Cómo funciona?",
+    icon: "🤝",
+    titulo: "Sumate al grupo",
     cuerpo:
-      "Explorá las salidas, pedí sumarte a la que te guste, y cuando el anfitrión te acepta, ¡ya sos parte de la tripulación!",
+      "Explorá las actividades, pedí sumarte a la que te guste, y cuando el organizador te acepta, ¡ya sos parte del grupo!",
   },
   {
-    icon: "⛵",
-    titulo: "Organizá tu propia salida",
+    icon: "✨",
+    titulo: "Organizá lo tuyo",
     cuerpo:
-      "¿Tenés lancha o ganas de armar un plan? Creá una salida, elegí el punto de encuentro y sumá tripulación. Calificaciones de ida y vuelta para que todos naveguen tranquilos.",
+      "¿Tenés ganas de armar un plan? Creá una actividad, elegí el punto de encuentro y sumá gente. Calificaciones de ida y vuelta para que todos estén tranquilos.",
   },
 ];
 
@@ -46,8 +46,8 @@ export default function Onboarding() {
       {/* Header: isotipo de marca + Saltar (siempre visible) */}
       <div className="flex items-center justify-between">
         <Image
-          src="/vamosalrio_isotipo.png"
-          alt="vamosalrio"
+          src="/brand/isotipo.png"
+          alt="activasalida"
           width={36}
           height={36}
           priority

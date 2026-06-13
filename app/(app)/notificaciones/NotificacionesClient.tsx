@@ -100,7 +100,7 @@ export default function NotificacionesClient({ items }: { items: NotifItem[] }) 
         const salida = unwrap(item.salida);
         const actor = unwrap(item.actor);
         const part = unwrap(item.participacion);
-        const tituloSalida = salida?.titulo ?? "una salida";
+        const tituloSalida = salida?.titulo ?? "una actividad";
         const nombre = actor?.nombre ?? "Alguien";
         const nuevo = noLeidasIniciales.has(item.id);
         const href = item.salida_id
@@ -164,7 +164,7 @@ export default function NotificacionesClient({ items }: { items: NotifItem[] }) 
                 ) : (
                   "Hay mensajes nuevos"
                 )}
-                {nombre !== "Alguien" ? " y la tripulación escribieron en " : " en "}
+                {nombre !== "Alguien" ? " y el grupo escribieron en " : " en "}
                 <strong className="font-semibold text-noche">
                   {tituloSalida}
                 </strong>

@@ -11,7 +11,7 @@ export default function LoginPage({
     <AuthCard
       logo
       titulo="Entrar"
-      subtitulo="Bienvenido de vuelta a vamosalrio."
+      subtitulo="Bienvenido de vuelta a activasalida."
       footer={
         <>
           ¿Todavía no tenés cuenta?{" "}

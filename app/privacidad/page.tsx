@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import LegalShell, { Clausula } from "@/components/LegalShell";
 
 export const metadata: Metadata = {
-  title: "Política de Privacidad · vamosalrio",
+  title: "Política de Privacidad · activasalida",
   description:
-    "Qué datos recolecta vamosalrio, para qué los usa y cómo los protege. Operada por Kappla SRL.",
+    "Qué datos recolecta activasalida, para qué los usa y cómo los protege. Operada por Kappla SRL.",
 };
 
 export default function PrivacidadPage() {
@@ -40,8 +40,9 @@ export default function PrivacidadPage() {
             a redes sociales (ej. Instagram) si el Usuario decide aportarlos.
           </li>
           <li>
-            <strong>Datos de uso:</strong> salidas creadas o a las que se sumó,
-            mensajes en chats de salidas, calificaciones y referencias.
+            <strong>Datos de uso:</strong> actividades creadas o a las que se
+            sumó, mensajes en chats de actividades, calificaciones y
+            referencias.
           </li>
           <li>
             <strong>Datos de ubicación:</strong> puntos de encuentro que el
@@ -59,8 +60,8 @@ export default function PrivacidadPage() {
         <p>
           Utilizamos los datos para: operar la Plataforma y permitir la
           coordinación entre Usuarios; mostrar perfiles a otros Usuarios; enviar
-          notificaciones operativas (solicitudes, recordatorios de salidas,
-          cambios); garantizar la seguridad y prevenir abusos; y mejorar el
+          notificaciones operativas (solicitudes, recordatorios de
+          actividades, cambios); garantizar la seguridad y prevenir abusos; y mejorar el
           servicio.
         </p>
       </Clausula>
