@@ -1,31 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
-import BrandWordmark from "@/components/BrandWordmark";
-
-/* ── Marca ──────────────────────────────────────────────────────────────── */
-
-function Logo() {
-  return (
-    <span className="flex items-center gap-2">
-      <BrandWordmark variant="light" className="text-xl" />
-    </span>
-  );
-}
-
-/* Onda divisoria: transiciona de una sección a la de abajo (color = fill). */
-function Ola({ fill, className = "" }: { fill: string; className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 1440 120"
-      preserveAspectRatio="none"
-      aria-hidden
-      className={`block h-[56px] w-full sm:h-[90px] ${className}`}
-      style={{ fill }}
-    >
-      <path d="M0,64 C240,118 420,8 720,44 C1000,78 1200,26 1440,70 L1440,120 L0,120 Z" />
-    </svg>
-  );
-}
+import LandingHeader from "@/components/LandingHeader";
 
 /* ── Datos ──────────────────────────────────────────────────────────────── */
 
@@ -70,11 +44,21 @@ const PASOS = [
 
 const TIPOS = [
   { emoji: "⚽", label: "Deporte" },
-  { emoji: "☕", label: "Juntada" },
+  { emoji: "🧉", label: "Juntada" },
   { emoji: "🎬", label: "Cine/Teatro" },
   { emoji: "✈️", label: "Viaje/Escapada" },
   { emoji: "🥾", label: "Caminata/Trekking" },
   { emoji: "🎲", label: "Juegos" },
+];
+
+/* Chips flotantes del hero (disposicion organica). */
+const HERO_CHIPS = [
+  { emoji: "⚽", label: "Deporte", className: "left-[6%] top-[6%] rotate-[-5deg]" },
+  { emoji: "🧉", label: "Juntada", className: "right-[4%] top-[2%] rotate-[4deg]" },
+  { emoji: "🎬", label: "Cine", className: "left-[18%] top-[40%] rotate-[3deg]" },
+  { emoji: "✈️", label: "Viaje", className: "right-[10%] top-[36%] rotate-[-6deg]" },
+  { emoji: "🥾", label: "Caminata", className: "left-[2%] bottom-[8%] rotate-[5deg]" },
+  { emoji: "🎉", label: "After", className: "right-[16%] bottom-[4%] rotate-[-3deg]" },
 ];
 
 const CONFIANZA = [
@@ -123,10 +107,29 @@ const CONFIANZA = [
   },
 ];
 
-const CAPTURAS = [
-  { archivo: "/landing/feed.png", titulo: "El feed", sub: "Actividades abiertas cerca tuyo" },
-  { archivo: "/landing/salida.png", titulo: "La actividad", sub: "Lugar en el mapa, costos, grupo" },
-  { archivo: "/landing/perfil.png", titulo: "El perfil", sub: "Reputacion, referencias y rangos" },
+/* Tarjetas de ejemplo del telefono dibujado en CSS. */
+const FEED_DEMO = [
+  {
+    titulo: "Futbol 5 en el club",
+    emoji: "⚽",
+    cuando: "Sab 20:00",
+    lugares: "2 lugares",
+    estrella: true,
+  },
+  {
+    titulo: "Mate en el Parque España",
+    emoji: "🧉",
+    cuando: "Dom 17:00",
+    lugares: "4 lugares",
+    estrella: false,
+  },
+  {
+    titulo: "Salida al cine",
+    emoji: "🎬",
+    cuando: "Vie 22:00",
+    lugares: "3 lugares",
+    estrella: false,
+  },
 ];
 
 /* ── Página ─────────────────────────────────────────────────────────────── */
@@ -134,52 +137,32 @@ const CAPTURAS = [
 export default function LandingPage() {
   return (
     <main className="bg-crema text-tinta">
-      {/* ═══ 1. HERO ═══════════════════════════════════════════════════════ */}
-      <section className="relative isolate overflow-hidden text-crema">
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-20"
-          style={{
-            background:
-              "linear-gradient(160deg, #1E2A78 0%, #2c3a9a 45%, #F4552E 100%)",
-          }}
-        />
-        <div
-          aria-hidden
-          className="absolute right-4 top-8 -z-10 h-40 w-40 sm:right-24 sm:top-14 sm:h-56 sm:w-56"
-          style={{
-            background:
-              "radial-gradient(circle at 50% 50%, rgba(244,85,46,0.95) 0%, rgba(244,85,46,0.55) 42%, rgba(244,85,46,0) 70%)",
-          }}
-        />
+      <LandingHeader />
 
-        <div className="mx-auto max-w-5xl px-6 pb-28 pt-16 sm:pb-36 sm:pt-20">
-          <header className="flex items-center justify-between gap-4">
-            <Logo />
-            <Link
-              href="/login"
-              className="text-sm font-semibold text-crema/90 transition hover:text-crema"
-            >
-              Iniciar sesion
-            </Link>
-          </header>
-
-          <div className="mt-16 max-w-2xl sm:mt-24">
-            <span className="inline-flex items-center gap-2 rounded-full bg-crema/15 px-3 py-1 text-xs font-medium text-crema ring-1 ring-inset ring-crema/20 backdrop-blur">
-              <span className="h-1.5 w-1.5 rounded-full bg-arena" />
-              Planes presenciales · todo el año
+      {/* ═══ 1. HERO (fondo claro) ═════════════════════════════════════════ */}
+      <section
+        className="relative isolate overflow-hidden"
+        style={{ backgroundColor: "#FFF9F8" }}
+      >
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-20 pt-14 sm:pb-28 sm:pt-20 lg:grid-cols-2">
+          {/* Columna texto */}
+          <div className="max-w-2xl">
+            <span className="inline-flex items-center gap-2 rounded-full bg-rio/10 px-3 py-1 text-xs font-semibold text-rio ring-1 ring-inset ring-rio/20">
+              <span className="h-1.5 w-1.5 rounded-full bg-rio" />
+              Planes presenciales todo el año
             </span>
 
-            <h1 className="mt-6 text-balance text-5xl font-bold leading-[1.02] tracking-tight sm:text-7xl">
-              Tu proximo plan empieza aca.
+            <h1 className="mt-6 text-balance text-5xl font-bold leading-[1.02] tracking-tight text-noche sm:text-6xl">
+              Tu proximo <span style={{ color: "#F4552E" }}>plan</span> empieza
+              aca.
             </h1>
 
-            <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-crema/85 sm:text-xl">
+            <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-tinta/75 sm:text-xl">
               Un partido, una juntada, una escapada o una caminata. Planes
               presenciales con gente que ya sabes quien es. Armas el tuyo o te
               sumas al de otro, ves quien va antes de salir, y se califican
               despues.{" "}
-              <span className="font-semibold text-crema">
+              <span className="font-semibold text-noche">
                 Sin grupo de WhatsApp.
               </span>
             </p>
@@ -187,21 +170,53 @@ export default function LandingPage() {
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/registro"
-                className="inline-flex h-13 items-center justify-center rounded-2xl bg-arena px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-arena/25 transition hover:brightness-105 active:scale-[0.98]"
+                className="inline-flex h-13 items-center justify-center rounded-2xl bg-rio px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-rio/25 transition hover:brightness-105 active:scale-[0.98]"
               >
                 Crear cuenta
               </Link>
               <Link
                 href="/feed"
-                className="inline-flex h-13 items-center justify-center rounded-2xl border border-crema/30 bg-crema/10 px-7 py-3.5 text-base font-semibold text-crema backdrop-blur transition hover:bg-crema/20 active:scale-[0.98]"
+                className="inline-flex h-13 items-center justify-center rounded-2xl border border-noche/25 bg-white px-7 py-3.5 text-base font-semibold text-noche transition hover:bg-noche/5 active:scale-[0.98]"
               >
                 Explorar actividades
               </Link>
             </div>
           </div>
+
+          {/* Columna cluster de chips flotantes */}
+          <div
+            aria-hidden
+            className="relative mx-auto hidden h-80 w-full max-w-md lg:block"
+          >
+            {HERO_CHIPS.map((c) => (
+              <span
+                key={c.label}
+                className={`absolute inline-flex items-center gap-2 rounded-2xl border border-noche/10 bg-white px-4 py-3 text-sm font-semibold text-noche shadow-lg shadow-noche/5 ${c.className}`}
+              >
+                <span className="text-xl">{c.emoji}</span>
+                {c.label}
+              </span>
+            ))}
+            {/* halo suave de fondo, en coral muy tenue (no es el sol de vamosalrio) */}
+            <div
+              className="absolute left-1/2 top-1/2 -z-10 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full"
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(244,85,46,0.10) 0%, rgba(244,85,46,0) 70%)",
+              }}
+            />
+          </div>
         </div>
 
-        <Ola fill="#FFF7F4" className="absolute inset-x-0 bottom-0" />
+        {/* Corte diagonal sutil hacia la seccion siguiente (reemplaza la onda) */}
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-10 sm:h-16"
+          style={{
+            backgroundColor: "#FFF7F4",
+            clipPath: "polygon(0 100%, 100% 100%, 100% 0)",
+          }}
+        />
       </section>
 
       {/* ═══ 2. EL PROBLEMA ════════════════════════════════════════════════ */}
@@ -307,7 +322,6 @@ export default function LandingPage() {
 
       {/* ═══ 5. CONFIANZA (el corazón) ═════════════════════════════════════ */}
       <section className="relative isolate overflow-hidden text-crema">
-        <Ola fill="#1E2A78" className="rotate-180" />
         <div
           aria-hidden
           className="absolute inset-0 -z-20"
@@ -358,14 +372,12 @@ export default function LandingPage() {
             ))}
           </ul>
         </div>
-
-        <Ola fill="#FFF7F4" className="absolute inset-x-0 bottom-0" />
       </section>
 
-      {/* ═══ 6. ASÍ SE VE POR DENTRO ═══════════════════════════════════════ */}
+      {/* ═══ 6. ASÍ SE VE POR DENTRO (telefono CSS) ════════════════════════ */}
       <section className="bg-crema">
         <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
-          <div className="max-w-2xl">
+          <div className="mx-auto max-w-2xl text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.18em] text-rio">
               Asi se ve por dentro
             </span>
@@ -374,27 +386,66 @@ export default function LandingPage() {
             </h2>
           </div>
 
-          <div className="mt-12 grid gap-6 sm:grid-cols-3">
-            {CAPTURAS.map((c) => (
-              <figure key={c.archivo}>
-                <Image
-                  src={c.archivo}
-                  alt={c.titulo}
-                  width={393}
-                  height={780}
-                  className="mx-auto h-auto w-full max-w-[260px] rounded-[2rem] shadow-xl"
-                />
-                <figcaption className="mt-4 text-center">
-                  <span className="block text-sm font-semibold text-noche">
-                    {c.titulo}
+          {/* Device frame dibujado en HTML/CSS */}
+          <div className="mt-14 flex justify-center">
+            <div className="w-[300px] rounded-[2.6rem] border-[10px] border-noche bg-noche p-0 shadow-2xl shadow-noche/30">
+              <div className="overflow-hidden rounded-[2rem] bg-crema">
+                {/* Barra superior del telefono */}
+                <div className="flex items-center justify-between bg-white px-5 py-3.5">
+                  <span className="text-base font-bold tracking-tight">
+                    <span style={{ color: "#F4552E" }}>activa</span>
+                    <span style={{ color: "#1E2A78" }}>salida</span>
                   </span>
-                  <span className="mt-0.5 block text-sm text-tinta/55">
-                    {c.sub}
+                  <span className="grid h-7 w-7 place-items-center rounded-full bg-rio/10 text-sm">
+                    🔔
                   </span>
-                </figcaption>
-              </figure>
-            ))}
+                </div>
+
+                {/* Feed de tarjetas */}
+                <div className="space-y-3 px-4 py-4">
+                  {FEED_DEMO.map((card) => (
+                    <div
+                      key={card.titulo}
+                      className="rounded-2xl border border-tinta/10 bg-white p-3.5 shadow-sm"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-rio/10 text-2xl">
+                          {card.emoji}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-1.5">
+                            <h3 className="truncate text-sm font-semibold text-noche">
+                              {card.titulo}
+                            </h3>
+                            {card.estrella && (
+                              <span className="inline-flex shrink-0 items-center gap-0.5 rounded-full bg-arena/15 px-1.5 py-0.5 text-[10px] font-bold text-arena">
+                                ⭐ Estrella
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-0.5 text-xs text-tinta/55">
+                            {card.cuando}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mt-3 flex items-center justify-between">
+                        <span className="rounded-full bg-noche/5 px-2.5 py-1 text-[11px] font-semibold text-noche">
+                          {card.lugares}
+                        </span>
+                        <span className="rounded-full bg-rio px-3 py-1 text-[11px] font-semibold text-white">
+                          Sumarme
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
+
+          <p className="mt-8 text-center text-pretty text-lg text-tinta/65">
+            Asi se ve por dentro. Simple, en el telefono.
+          </p>
         </div>
       </section>
 
@@ -436,27 +487,33 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ═══ 8. FOOTER ═════════════════════════════════════════════════════ */}
-      <footer className="bg-crema">
-        <div className="mx-auto max-w-6xl border-t border-tinta/10 px-6 py-10">
+      {/* ═══ 8. FOOTER (fondo navy) ════════════════════════════════════════ */}
+      <footer style={{ backgroundColor: "#1E2A78" }}>
+        <div className="mx-auto max-w-6xl px-6 py-10">
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
-            <BrandWordmark variant="dark" className="text-3xl" />
-            <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-tinta/60">
-              <Link href="/terminos" className="hover:text-rio">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/logo-full-dark.png"
+              alt="activasalida"
+              className="h-7 w-auto"
+              height={28}
+            />
+            <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-crema/70">
+              <Link href="/terminos" className="hover:text-crema">
                 Terminos
               </Link>
-              <Link href="/privacidad" className="hover:text-rio">
+              <Link href="/privacidad" className="hover:text-crema">
                 Privacidad
               </Link>
-              <Link href="/contacto" className="hover:text-rio">
+              <Link href="/contacto" className="hover:text-crema">
                 Contacto
               </Link>
-              <Link href="/ayuda" className="hover:text-rio">
+              <Link href="/ayuda" className="hover:text-crema">
                 Ayuda
               </Link>
             </nav>
           </div>
-          <p className="mt-6 text-xs text-tinta/40">
+          <p className="mt-6 text-xs text-crema/45">
             Hecho en Rosario, Argentina. · © 2026 activasalida · Kappla SRL
           </p>
         </div>
