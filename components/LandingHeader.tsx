@@ -29,10 +29,10 @@ export default function LandingHeader() {
           <img
             src="/brand/isotipo.png"
             alt=""
-            className="h-[46px] w-auto"
-            height={46}
+            className="h-[56px] w-auto"
+            height={56}
           />
-          <span className="text-3xl font-extrabold tracking-tight">
+          <span className="text-4xl font-extrabold tracking-tight">
             <span style={{ color: "#F4552E" }}>activa</span>
             <span style={{ color: "#1E2A78" }}>salida</span>
           </span>

@@ -194,9 +194,11 @@ export default function LandingPage() {
             {HERO_CHIPS.map((c) => (
               <span
                 key={c.label}
-                className={`absolute inline-flex items-center gap-2 rounded-2xl border border-noche/10 bg-white px-4 py-3 text-sm font-semibold text-noche shadow-lg shadow-noche/5 ${c.className}`}
+                className={`absolute inline-flex items-center gap-2.5 rounded-2xl border border-noche/10 bg-white px-5 py-3 text-lg font-semibold text-noche shadow-xl shadow-noche/10 ${c.className}`}
               >
-                <span className="text-xl">{c.emoji}</span>
+                <span style={{ fontSize: "1.7rem", lineHeight: 1 }}>
+                  {c.emoji}
+                </span>
                 {c.label}
               </span>
             ))}
