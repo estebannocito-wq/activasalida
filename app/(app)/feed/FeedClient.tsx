@@ -336,8 +336,64 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
         </div>
       ) : null}
 
-      {/* ── Estado vacío atractivo ── */}
-      {count === 0 ? (
+      {/* ── Vista MAPA: el mapa se ve SIEMPRE, haya o no actividades ── */}
+      {vista === "mapa" ? (
+        <div className="mt-5">
+          <div className="relative">
+            <FeedMap center={center} userPos={pos} points={puntos} />
+
+            {/* Sin actividades: cartelito sobre el mapa, sin taparlo. */}
+            {count === 0 ? (
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[500] flex justify-center p-4">
+                <div className="pointer-events-auto max-w-md rounded-2xl border border-tinta/10 bg-white/95 px-5 py-4 text-center shadow-xl shadow-noche/15 backdrop-blur">
+                  <h2 className="text-balance text-base font-extrabold tracking-tight text-noche">
+                    Todavía no hay planes cerca tuyo.
+                  </h2>
+                  <p className="mt-1 text-sm text-tinta/65">
+                    Arrancá vos el primero y que la gente se sume.
+                  </p>
+                  <Link
+                    href="/salida/nueva"
+                    className="mt-4 inline-flex h-11 items-center justify-center rounded-2xl bg-rio px-6 text-sm font-semibold text-crema shadow-lg shadow-rio/25 transition hover:brightness-105 active:scale-[0.98]"
+                  >
+                    Crear actividad
+                  </Link>
+                  {(rango !== "4sem" || filtrosActivos > 0) &&
+                  salidas.length > 0 ? (
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setRango("4sem");
+                          setTransporte("todas");
+                          setCategorias([]);
+                        }}
+                        className="mt-3 text-xs font-semibold text-rio"
+                      >
+                        Ampliar a 4 semanas y limpiar filtros
+                      </button>
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
+          </div>
+
+          {count > 0 ? (
+            <p className="mt-2 text-center text-xs text-tinta/50">
+              {puntos.length}{" "}
+              {puntos.length === 1
+                ? "actividad ubicada"
+                : "actividades ubicadas"}{" "}
+              en el mapa
+              {puntos.length < count
+                ? ` · ${count - puntos.length} sin ubicación (mirá la lista)`
+                : ""}
+            </p>
+          ) : null}
+        </div>
+      ) : count === 0 ? (
+        /* ── Vista LISTA, sin actividades: estado vacío grande ── */
         <div className="mt-6 overflow-hidden rounded-3xl border border-tinta/10 bg-white px-6 py-14 text-center shadow-sm">
           <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-rio/10 text-4xl">
             🧭
@@ -369,19 +425,6 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
               </button>
             </div>
           ) : null}
-        </div>
-      ) : vista === "mapa" ? (
-        /* ── Vista MAPA ── */
-        <div className="mt-5">
-          <FeedMap center={center} userPos={pos} points={puntos} />
-          <p className="mt-2 text-center text-xs text-tinta/50">
-            {puntos.length}{" "}
-            {puntos.length === 1 ? "actividad ubicada" : "actividades ubicadas"}{" "}
-            en el mapa
-            {puntos.length < count
-              ? ` · ${count - puntos.length} sin ubicación (mirá la lista)`
-              : ""}
-          </p>
         </div>
       ) : (
         /* ── Vista LISTA ── */
