@@ -24,15 +24,15 @@ export default function LandingHeader() {
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3.5">
-        <Link href="/" className="flex items-center gap-2.5">
+        <Link href="/" className="flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/brand/isotipo.png"
             alt=""
-            className="h-8 w-auto"
-            height={32}
+            className="h-[46px] w-auto"
+            height={46}
           />
-          <span className="text-xl font-bold tracking-tight">
+          <span className="text-3xl font-extrabold tracking-tight">
             <span style={{ color: "#F4552E" }}>activa</span>
             <span style={{ color: "#1E2A78" }}>salida</span>
           </span>

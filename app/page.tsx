@@ -42,13 +42,16 @@ const PASOS = [
   },
 ];
 
+/* Tintes pastel por categoria: un circulo de color suave detras del emoji. */
 const TIPOS = [
-  { emoji: "⚽", label: "Deporte" },
-  { emoji: "🧉", label: "Juntada" },
-  { emoji: "🎬", label: "Cine/Teatro" },
-  { emoji: "✈️", label: "Viaje/Escapada" },
-  { emoji: "🥾", label: "Caminata/Trekking" },
-  { emoji: "🎲", label: "Juegos" },
+  { emoji: "⚽", label: "Deporte", tint: "#FFE3DB", ring: "#F4552E" },
+  { emoji: "🧉", label: "Juntada", tint: "#DCF5E3", ring: "#22A06B" },
+  { emoji: "🎬", label: "Cine/Teatro", tint: "#ECE3FB", ring: "#7C5CDB" },
+  { emoji: "✈️", label: "Viaje/Escapada", tint: "#DCEBFB", ring: "#3B82F6" },
+  { emoji: "🥾", label: "Caminata/Trekking", tint: "#FCEFD2", ring: "#E0A92E" },
+  { emoji: "🎲", label: "Juegos", tint: "#FBE0EC", ring: "#E0539C" },
+  { emoji: "🎉", label: "After", tint: "#E2E3F7", ring: "#4F46E5" },
+  { emoji: "✨", label: "Otro", tint: "#EBEDEF", ring: "#6B7280" },
 ];
 
 /* Chips flotantes del hero (disposicion organica). */
@@ -296,24 +299,24 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
-            {TIPOS.map((t, i) => (
+          <ul className="mt-10 grid grid-cols-2 gap-5 sm:grid-cols-4">
+            {TIPOS.map((t) => (
               <li
                 key={t.label}
-                className="group relative overflow-hidden rounded-3xl border border-tinta/10 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                className="group flex min-h-[180px] flex-col items-center justify-center gap-4 rounded-[2rem] border border-tinta/10 bg-white p-8 text-center shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(30,42,120,0.12)]"
               >
-                <div
-                  aria-hidden
-                  className="absolute -right-6 -top-6 h-20 w-20 rounded-full opacity-70 transition group-hover:scale-110"
+                <span
+                  className="grid h-20 w-20 place-items-center rounded-full transition duration-200 group-hover:scale-105"
                   style={{
-                    background:
-                      i % 2 === 0
-                        ? "radial-gradient(circle, rgba(244,85,46,0.16) 0%, rgba(244,85,46,0) 70%)"
-                        : "radial-gradient(circle, rgba(30,42,120,0.16) 0%, rgba(30,42,120,0) 70%)",
+                    backgroundColor: t.tint,
+                    boxShadow: `inset 0 0 0 1px ${t.ring}22`,
                   }}
-                />
-                <span className="text-4xl">{t.emoji}</span>
-                <h3 className="mt-4 font-semibold text-noche">{t.label}</h3>
+                >
+                  <span style={{ fontSize: "2.2rem", lineHeight: 1 }}>
+                    {t.emoji}
+                  </span>
+                </span>
+                <h3 className="text-base font-bold text-noche">{t.label}</h3>
               </li>
             ))}
           </ul>
@@ -386,66 +389,181 @@ export default function LandingPage() {
             </h2>
           </div>
 
-          {/* Device frame dibujado en HTML/CSS */}
-          <div className="mt-14 flex justify-center">
-            <div className="w-[300px] rounded-[2.6rem] border-[10px] border-noche bg-noche p-0 shadow-2xl shadow-noche/30">
-              <div className="overflow-hidden rounded-[2rem] bg-crema">
-                {/* Barra superior del telefono */}
-                <div className="flex items-center justify-between bg-white px-5 py-3.5">
-                  <span className="text-base font-bold tracking-tight">
-                    <span style={{ color: "#F4552E" }}>activa</span>
-                    <span style={{ color: "#1E2A78" }}>salida</span>
-                  </span>
-                  <span className="grid h-7 w-7 place-items-center rounded-full bg-rio/10 text-sm">
-                    🔔
-                  </span>
-                </div>
-
-                {/* Feed de tarjetas */}
-                <div className="space-y-3 px-4 py-4">
-                  {FEED_DEMO.map((card) => (
-                    <div
-                      key={card.titulo}
-                      className="rounded-2xl border border-tinta/10 bg-white p-3.5 shadow-sm"
-                    >
-                      <div className="flex items-center gap-3">
-                        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-rio/10 text-2xl">
-                          {card.emoji}
-                        </span>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-1.5">
-                            <h3 className="truncate text-sm font-semibold text-noche">
-                              {card.titulo}
-                            </h3>
-                            {card.estrella && (
-                              <span className="inline-flex shrink-0 items-center gap-0.5 rounded-full bg-arena/15 px-1.5 py-0.5 text-[10px] font-bold text-arena">
-                                ⭐ Estrella
-                              </span>
-                            )}
-                          </div>
-                          <p className="mt-0.5 text-xs text-tinta/55">
-                            {card.cuando}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="mt-3 flex items-center justify-between">
-                        <span className="rounded-full bg-noche/5 px-2.5 py-1 text-[11px] font-semibold text-noche">
-                          {card.lugares}
-                        </span>
-                        <span className="rounded-full bg-rio px-3 py-1 text-[11px] font-semibold text-white">
-                          Sumarme
-                        </span>
-                      </div>
+          {/* Tres telefonos dibujados en HTML/CSS, lado a lado */}
+          <div className="mt-14 grid gap-12 sm:gap-8 lg:grid-cols-3">
+            {/* ── Telefono 1: EL EXPLORADOR ── */}
+            <figure className="flex flex-col items-center">
+              <div className="w-[280px] rounded-[2.6rem] border-[10px] border-noche bg-noche shadow-2xl shadow-noche/30">
+                <div className="overflow-hidden rounded-[2rem] bg-crema">
+                  <div className="flex items-center justify-between bg-white px-5 py-3.5">
+                    <span className="text-base font-bold tracking-tight">
+                      <span style={{ color: "#F4552E" }}>activa</span>
+                      <span style={{ color: "#1E2A78" }}>salida</span>
+                    </span>
+                    <span className="grid h-7 w-7 place-items-center rounded-full bg-rio/10 text-sm">
+                      🔔
+                    </span>
+                  </div>
+                  <div className="px-4 py-4">
+                    {/* Banner de actividades cerca */}
+                    <div className="flex items-center gap-2 rounded-2xl bg-rio px-3.5 py-3 text-white shadow-sm">
+                      <span className="text-lg">📍</span>
+                      <span className="text-sm font-semibold leading-tight">
+                        12 actividades cerca tuyo
+                      </span>
                     </div>
-                  ))}
+                    {/* Area de mapa estilizada con pines */}
+                    <div
+                      className="relative mt-4 h-56 overflow-hidden rounded-2xl border border-tinta/10"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, #EAF0F6 0%, #F2F5F9 100%)",
+                      }}
+                    >
+                      {/* lineas tipo calles */}
+                      <div className="absolute inset-0 opacity-60">
+                        <div className="absolute left-0 right-0 top-1/3 h-[3px] bg-white" />
+                        <div className="absolute left-0 right-0 top-2/3 h-[3px] bg-white" />
+                        <div className="absolute bottom-0 left-1/3 top-0 w-[3px] bg-white" />
+                        <div className="absolute bottom-0 right-1/4 top-0 w-[3px] bg-white" />
+                      </div>
+                      {/* pines coral */}
+                      <span className="absolute left-[24%] top-[28%] text-3xl drop-shadow">
+                        📍
+                      </span>
+                      <span className="absolute right-[22%] top-[44%] text-3xl drop-shadow">
+                        📍
+                      </span>
+                      <span className="absolute bottom-[18%] left-[44%] text-2xl drop-shadow">
+                        📍
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+              <figcaption className="mt-5 text-center text-sm text-tinta/65">
+                <span className="font-semibold text-noche">Explora</span> · mira
+                que hay cerca tuyo
+              </figcaption>
+            </figure>
 
-          <p className="mt-8 text-center text-pretty text-lg text-tinta/65">
-            Asi se ve por dentro. Simple, en el telefono.
-          </p>
+            {/* ── Telefono 2: EL FEED ── */}
+            <figure className="flex flex-col items-center">
+              <div className="w-[280px] rounded-[2.6rem] border-[10px] border-noche bg-noche shadow-2xl shadow-noche/30">
+                <div className="overflow-hidden rounded-[2rem] bg-crema">
+                  <div className="flex items-center justify-between bg-white px-5 py-3.5">
+                    <span className="text-base font-bold tracking-tight">
+                      <span style={{ color: "#F4552E" }}>activa</span>
+                      <span style={{ color: "#1E2A78" }}>salida</span>
+                    </span>
+                    <span className="grid h-7 w-7 place-items-center rounded-full bg-rio/10 text-sm">
+                      🔔
+                    </span>
+                  </div>
+                  <div className="space-y-3 px-4 py-4">
+                    {FEED_DEMO.map((card) => (
+                      <div
+                        key={card.titulo}
+                        className="rounded-2xl border border-tinta/10 bg-white p-3.5 shadow-sm"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-rio/10 text-2xl">
+                            {card.emoji}
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-1.5">
+                              <h3 className="truncate text-sm font-semibold text-noche">
+                                {card.titulo}
+                              </h3>
+                              {card.estrella && (
+                                <span className="inline-flex shrink-0 items-center gap-0.5 rounded-full bg-arena/15 px-1.5 py-0.5 text-[10px] font-bold text-arena">
+                                  ⭐ Estrella
+                                </span>
+                              )}
+                            </div>
+                            <p className="mt-0.5 text-xs text-tinta/55">
+                              {card.cuando}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="mt-3 flex items-center justify-between">
+                          <span className="rounded-full bg-noche/5 px-2.5 py-1 text-[11px] font-semibold text-noche">
+                            {card.lugares}
+                          </span>
+                          <span className="rounded-full bg-rio px-3 py-1 text-[11px] font-semibold text-white">
+                            Sumarme
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <figcaption className="mt-5 text-center text-sm text-tinta/65">
+                <span className="font-semibold text-noche">El feed</span> ·
+                sumate al plan
+              </figcaption>
+            </figure>
+
+            {/* ── Telefono 3: EL PERFIL ── */}
+            <figure className="flex flex-col items-center">
+              <div className="w-[280px] rounded-[2.6rem] border-[10px] border-noche bg-noche shadow-2xl shadow-noche/30">
+                <div className="overflow-hidden rounded-[2rem] bg-crema">
+                  <div className="flex items-center justify-between bg-white px-5 py-3.5">
+                    <span className="text-base font-bold tracking-tight">
+                      <span style={{ color: "#F4552E" }}>activa</span>
+                      <span style={{ color: "#1E2A78" }}>salida</span>
+                    </span>
+                    <span className="grid h-7 w-7 place-items-center rounded-full bg-rio/10 text-sm">
+                      ⚙️
+                    </span>
+                  </div>
+                  <div className="px-4 py-5">
+                    {/* Avatar + nombre + rango */}
+                    <div className="flex flex-col items-center text-center">
+                      <span className="grid h-20 w-20 place-items-center rounded-full bg-rio/15 text-4xl">
+                        🙂
+                      </span>
+                      <h3 className="mt-3 text-base font-bold text-noche">
+                        Martin G.
+                      </h3>
+                      <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-arena/15 px-2.5 py-0.5 text-[11px] font-bold text-arena">
+                        ⭐ Estrella
+                      </span>
+                      {/* estrellitas de reputacion */}
+                      <div className="mt-2 text-base tracking-wide">
+                        ⭐⭐⭐⭐⭐
+                      </div>
+                    </div>
+                    {/* 3 numeros */}
+                    <div className="mt-5 grid grid-cols-3 gap-2">
+                      {[
+                        { n: "24", l: "actividades" },
+                        { n: "11", l: "organizador" },
+                        { n: "18", l: "referencias" },
+                      ].map((s) => (
+                        <div
+                          key={s.l}
+                          className="rounded-2xl border border-tinta/10 bg-white px-1 py-3 text-center shadow-sm"
+                        >
+                          <div className="text-lg font-bold text-noche">
+                            {s.n}
+                          </div>
+                          <div className="mt-0.5 text-[10px] leading-tight text-tinta/55">
+                            {s.l}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <figcaption className="mt-5 text-center text-sm text-tinta/65">
+                <span className="font-semibold text-noche">El perfil</span> ·
+                reputacion y rangos
+              </figcaption>
+            </figure>
+          </div>
         </div>
       </section>
 
