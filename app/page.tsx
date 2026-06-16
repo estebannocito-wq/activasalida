@@ -202,7 +202,7 @@ export default function LandingPage() {
 
       {/* ═══ 2. EL PROBLEMA ════════════════════════════════════════════════ */}
       <section className="bg-crema">
-        <div className="mx-auto max-w-4xl px-6 py-20 sm:py-28">
+        <div className="mx-auto max-w-4xl px-6 pb-10 pt-20 sm:pb-14 sm:pt-28">
           <span className="text-xs font-semibold uppercase tracking-[0.18em] text-arena">
             El problema de siempre
           </span>
@@ -225,7 +225,7 @@ export default function LandingPage() {
 
       {/* ═══ 2b. EL MAPA (gancho del producto) ═════════════════════════════ */}
       <section style={{ backgroundColor: "#FFF9F8" }}>
-        <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
+        <div className="mx-auto max-w-6xl px-6 pb-20 pt-10 sm:pb-28 sm:pt-14">
           <div className="mx-auto max-w-2xl text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.18em] text-rio">
               El mapa
