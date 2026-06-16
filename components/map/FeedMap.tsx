@@ -9,12 +9,13 @@ export type FeedMapPoint = {
   titulo: string;
   fecha: string;
   categoriaLabel: string | null;
+  emoji: string;
 };
 
 const Inner = dynamic(() => import("./FeedMapInner"), {
   ssr: false,
   loading: () => (
-    <div className="h-[60vh] min-h-[360px] w-full animate-pulse rounded-2xl bg-tinta/5" />
+    <div className="h-[64vh] min-h-[400px] w-full animate-pulse rounded-3xl bg-tinta/5" />
   ),
 });
 

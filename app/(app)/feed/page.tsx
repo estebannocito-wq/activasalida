@@ -44,8 +44,8 @@ export default async function FeedPage({
   return (
     <div className="px-6 pb-6 pt-10">
       <header>
-        <h1 className="text-3xl font-bold tracking-tight text-noche">
-          Actividades
+        <h1 className="text-balance text-3xl font-extrabold tracking-tight text-noche sm:text-4xl">
+          Explora qué hay cerca tuyo
         </h1>
         <p className="mt-2 text-tinta/70">
           Sumate a una o armá la tuya.

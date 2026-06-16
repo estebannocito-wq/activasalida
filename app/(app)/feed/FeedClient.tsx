@@ -51,6 +51,18 @@ type Vista = "mapa" | "lista";
 // Rosario como centro de respaldo si no hay geolocalización.
 const ROSARIO = { lat: -32.9468, lng: -60.6393 };
 
+// Emoji por categoría para el pin del mapa (independiente del emoji de portada).
+const PIN_EMOJI: Record<string, string> = {
+  deporte: "⚽",
+  juntada: "🧉",
+  cine_teatro: "🎬",
+  viaje: "✈️",
+  caminata: "🥾",
+  juegos: "🎲",
+  after: "🎉",
+  otro: "📌",
+};
+
 const RANGOS: { value: RangoFilter; label: string; dias: number; sufijo: string }[] =
   [
     { value: "7d", label: "7 días", dias: 7, sufijo: "en los próximos 7 días" },
@@ -206,6 +218,7 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
         titulo: s.titulo,
         fecha: s.fecha_hora,
         categoriaLabel: categoriaLabel(s.categoria, s.tipo_otro),
+        emoji: PIN_EMOJI[s.categoria ?? "otro"] ?? "📌",
       }));
   }, [filtradas]);
 
@@ -220,36 +233,31 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
 
   return (
     <div className="mt-6">
-      {/* ── Banner destacado ── */}
+      {/* ── Banner hero del conteo ── */}
       {count > 0 ? (
-        <div className="flex items-center gap-3 rounded-2xl bg-rio px-4 py-3.5 text-crema shadow-sm shadow-rio/25">
-          <span className="text-2xl" aria-hidden>
+        <div
+          className="flex items-center gap-4 rounded-3xl px-5 py-5 text-crema shadow-lg shadow-noche/20"
+          style={{
+            background: "linear-gradient(135deg, #F4552E 0%, #1E2A78 100%)",
+          }}
+        >
+          <span
+            className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-white/15 text-3xl"
+            aria-hidden
+          >
             📍
           </span>
-          <p className="text-sm font-semibold leading-snug sm:text-base">
-            Tenés {count} {count === 1 ? "actividad" : "actividades"} cerca tuyo{" "}
-            {rangoActual.sufijo}.
+          <p className="leading-tight">
+            <span className="text-4xl font-extrabold sm:text-5xl">{count}</span>{" "}
+            <span className="text-base font-semibold sm:text-lg">
+              {count === 1 ? "actividad" : "actividades"} cerca tuyo {rangoActual.sufijo}
+            </span>
           </p>
         </div>
-      ) : (
-        <div className="rounded-2xl border border-dashed border-tinta/20 bg-white/60 px-4 py-5 text-center">
-          <p className="text-sm font-semibold text-noche">
-            Todavía no hay actividades cerca tuyo.
-          </p>
-          <p className="mt-1 text-sm text-tinta/60">
-            Sé el primero en crear una.
-          </p>
-          <Link
-            href="/salida/nueva"
-            className="mt-4 inline-flex h-11 items-center justify-center rounded-2xl bg-rio px-5 text-sm font-semibold text-crema active:scale-[0.98]"
-          >
-            Crear actividad
-          </Link>
-        </div>
-      )}
+      ) : null}
 
       {/* ── Controles: rango de fecha + toggle Mapa/Lista ── */}
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
           {RANGOS.map((opt) => {
             const active = rango === opt.value;
@@ -258,10 +266,10 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
                 key={opt.value}
                 type="button"
                 onClick={() => setRango(opt.value)}
-                className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+                className={`rounded-full border px-4 py-2 text-sm font-semibold transition active:scale-[0.97] ${
                   active
-                    ? "border-rio bg-rio text-crema"
-                    : "border-tinta/15 bg-white text-tinta/70"
+                    ? "border-rio bg-rio text-crema shadow-sm shadow-rio/30"
+                    : "border-tinta/15 bg-white text-tinta/70 hover:border-rio/30"
                 }`}
               >
                 {opt.label}
@@ -272,10 +280,10 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
             type="button"
             onClick={() => setShowFiltros((v) => !v)}
             aria-expanded={showFiltros}
-            className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+            className={`inline-flex items-center gap-1 rounded-full border px-4 py-2 text-sm font-semibold transition active:scale-[0.97] ${
               showFiltros || filtrosActivos > 0
                 ? "border-rio bg-rio/10 text-rio"
-                : "border-tinta/15 bg-white text-tinta/70"
+                : "border-tinta/15 bg-white text-tinta/70 hover:border-rio/30"
             }`}
           >
             Filtros{filtrosActivos > 0 ? ` (${filtrosActivos})` : ""}
@@ -283,13 +291,15 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
           </button>
         </div>
 
-        {/* Switch Mapa | Lista */}
-        <div className="inline-flex rounded-full border border-tinta/15 bg-white p-0.5">
+        {/* Segmented control Mapa | Lista */}
+        <div className="inline-flex rounded-full border border-tinta/15 bg-white p-1 shadow-sm">
           <button
             type="button"
             onClick={() => setVista("mapa")}
-            className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold transition ${
-              vista === "mapa" ? "bg-rio text-crema" : "text-tinta/60"
+            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition ${
+              vista === "mapa"
+                ? "bg-rio text-crema shadow-sm shadow-rio/30"
+                : "text-tinta/60 hover:text-tinta"
             }`}
           >
             🗺️ Mapa
@@ -297,8 +307,10 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
           <button
             type="button"
             onClick={() => setVista("lista")}
-            className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold transition ${
-              vista === "lista" ? "bg-rio text-crema" : "text-tinta/60"
+            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition ${
+              vista === "lista"
+                ? "bg-rio text-crema shadow-sm shadow-rio/30"
+                : "text-tinta/60 hover:text-tinta"
             }`}
           >
             ☰ Lista
@@ -324,9 +336,43 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
         </div>
       ) : null}
 
-      {/* ── Vista MAPA ── */}
-      {vista === "mapa" ? (
-        <div className="mt-4">
+      {/* ── Estado vacío atractivo ── */}
+      {count === 0 ? (
+        <div className="mt-6 overflow-hidden rounded-3xl border border-tinta/10 bg-white px-6 py-14 text-center shadow-sm">
+          <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-rio/10 text-4xl">
+            🧭
+          </div>
+          <h2 className="mt-5 text-balance text-2xl font-extrabold tracking-tight text-noche">
+            Todavía no hay planes cerca tuyo.
+          </h2>
+          <p className="mx-auto mt-2 max-w-sm text-pretty text-tinta/65">
+            Arrancá vos el primero y que la gente se sume.
+          </p>
+          <Link
+            href="/salida/nueva"
+            className="mt-7 inline-flex h-12 items-center justify-center rounded-2xl bg-rio px-7 text-base font-semibold text-crema shadow-lg shadow-rio/25 transition hover:brightness-105 active:scale-[0.98]"
+          >
+            Crear actividad
+          </Link>
+          {(rango !== "4sem" || filtrosActivos > 0) && salidas.length > 0 ? (
+            <div>
+              <button
+                type="button"
+                onClick={() => {
+                  setRango("4sem");
+                  setTransporte("todas");
+                  setCategorias([]);
+                }}
+                className="mt-5 text-sm font-semibold text-rio"
+              >
+                Ampliar a 4 semanas y limpiar filtros
+              </button>
+            </div>
+          ) : null}
+        </div>
+      ) : vista === "mapa" ? (
+        /* ── Vista MAPA ── */
+        <div className="mt-5">
           <FeedMap center={center} userPos={pos} points={puntos} />
           <p className="mt-2 text-center text-xs text-tinta/50">
             {puntos.length}{" "}
@@ -339,48 +385,27 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
         </div>
       ) : (
         /* ── Vista LISTA ── */
-        <div className="mt-4">
+        <div className="mt-5">
           <p className="text-sm font-medium text-tinta/60">
             {count} {count === 1 ? "actividad" : "actividades"}
             {pos ? " · más cercanas primero" : ""}
           </p>
-          {count === 0 ? (
-            <div className="mt-3 rounded-2xl border border-dashed border-tinta/15 bg-white/50 px-4 py-8 text-center">
-              <p className="text-sm text-tinta/60">
-                Ninguna actividad coincide con esos filtros.
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setRango("4sem");
-                  setTransporte("todas");
-                  setCategorias([]);
-                }}
-                className="mt-3 text-sm font-semibold text-rio"
-              >
-                Ampliar a 4 semanas y limpiar filtros
-              </button>
-            </div>
-          ) : (
-            <>
-              <ul className="mt-3 space-y-2.5">
-                {visibles.map(({ salida, dist }) => (
-                  <li key={salida.id}>
-                    <SalidaCard salida={salida} distanciaKm={dist} />
-                  </li>
-                ))}
-              </ul>
-              {hayMas ? (
-                <button
-                  type="button"
-                  onClick={() => setVisible((v) => v + PAGE_SIZE)}
-                  className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-2xl border border-tinta/15 bg-white text-sm font-semibold text-tinta/70 active:scale-[0.98]"
-                >
-                  Ver más ({count - visible} más)
-                </button>
-              ) : null}
-            </>
-          )}
+          <ul className="mt-3 space-y-2.5">
+            {visibles.map(({ salida, dist }) => (
+              <li key={salida.id}>
+                <SalidaCard salida={salida} distanciaKm={dist} />
+              </li>
+            ))}
+          </ul>
+          {hayMas ? (
+            <button
+              type="button"
+              onClick={() => setVisible((v) => v + PAGE_SIZE)}
+              className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-2xl border border-tinta/15 bg-white text-sm font-semibold text-tinta/70 active:scale-[0.98]"
+            >
+              Ver más ({count - visible} más)
+            </button>
+          ) : null}
         </div>
       )}
     </div>
@@ -411,10 +436,10 @@ function ChipGroup({
               key={opt.value}
               type="button"
               onClick={() => onChange(opt.value)}
-              className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+              className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition active:scale-[0.97] ${
                 active
                   ? "border-rio bg-rio text-crema"
-                  : "border-tinta/15 bg-white text-tinta/70"
+                  : "border-tinta/15 bg-white text-tinta/70 hover:border-rio/30"
               }`}
             >
               {opt.label}
@@ -465,10 +490,10 @@ function MultiChipGroup({
               key={opt.value}
               type="button"
               onClick={() => onToggle(opt.value)}
-              className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+              className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition active:scale-[0.97] ${
                 active
                   ? "border-rio bg-rio text-crema"
-                  : "border-tinta/15 bg-white text-tinta/70"
+                  : "border-tinta/15 bg-white text-tinta/70 hover:border-rio/30"
               }`}
             >
               {opt.label}

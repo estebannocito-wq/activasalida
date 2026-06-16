@@ -8,17 +8,32 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { formatFechaCorta } from "@/lib/format";
 import type { FeedMapPoint } from "./FeedMap";
 
-// Pin coral de marca (rio #F4552E) como divIcon — evita los assets rotos del
-// marcador por defecto de Leaflet con bundlers.
-const PIN_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 30 38"><path d="M15 1C7.8 1 2 6.6 2 13.6 2 22 15 37 15 37s13-15 13-23.4C28 6.6 22.2 1 15 1z" fill="#F4552E" stroke="#ffffff" stroke-width="2"/><circle cx="15" cy="13.5" r="4.5" fill="#ffffff"/></svg>`;
+// Pin de marca: gota coral #F4552E con un círculo blanco arriba que aloja el
+// emoji de la categoría. Sombra suave vía drop-shadow. Cacheamos por emoji para
+// no recrear el divIcon en cada render.
+const pinCache = new Map<string, L.DivIcon>();
 
-const coralPinIcon = L.divIcon({
-  className: "as-feed-pin",
-  html: PIN_SVG,
-  iconSize: [32, 40],
-  iconAnchor: [16, 40],
-  popupAnchor: [0, -36],
-});
+function makePinIcon(emoji: string): L.DivIcon {
+  const cached = pinCache.get(emoji);
+  if (cached) return cached;
+  const html = `
+    <div style="position:relative;width:42px;height:50px;filter:drop-shadow(0 4px 5px rgba(30,42,120,0.35))">
+      <svg width="42" height="50" viewBox="0 0 42 50" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21 1.5C10.5 1.5 2 9.6 2 19.6 2 33 21 48.5 21 48.5S40 33 40 19.6C40 9.6 31.5 1.5 21 1.5z" fill="#F4552E" stroke="#ffffff" stroke-width="2.5"/>
+        <circle cx="21" cy="19" r="13.5" fill="#ffffff"/>
+      </svg>
+      <span style="position:absolute;top:7px;left:0;width:42px;text-align:center;font-size:19px;line-height:26px">${emoji}</span>
+    </div>`;
+  const icon = L.divIcon({
+    className: "as-feed-pin",
+    html,
+    iconSize: [42, 50],
+    iconAnchor: [21, 48],
+    popupAnchor: [0, -44],
+  });
+  pinCache.set(emoji, icon);
+  return icon;
+}
 
 // Punto azul tipo "vos estás acá".
 const userDotIcon = L.divIcon({
@@ -58,7 +73,7 @@ export default function FeedMapInner({
   points: FeedMapPoint[];
 }) {
   return (
-    <div className="h-[60vh] min-h-[360px] w-full overflow-hidden rounded-2xl border border-tinta/10 shadow-sm">
+    <div className="h-[64vh] min-h-[400px] w-full overflow-hidden rounded-3xl border border-tinta/10 shadow-lg shadow-noche/10">
       <MapContainer
         center={[center.lat, center.lng]}
         zoom={13}
@@ -72,16 +87,13 @@ export default function FeedMapInner({
 
         {userPos ? (
           <>
-            <Marker
-              position={[userPos.lat, userPos.lng]}
-              icon={userDotIcon}
-            />
+            <Marker position={[userPos.lat, userPos.lng]} icon={userDotIcon} />
             <Recenter lat={userPos.lat} lng={userPos.lng} />
           </>
         ) : null}
 
         {points.map((p) => (
-          <Marker key={p.id} position={[p.lat, p.lng]} icon={coralPinIcon}>
+          <Marker key={p.id} position={[p.lat, p.lng]} icon={makePinIcon(p.emoji)}>
             <Popup>
               <div className="min-w-[160px]">
                 {p.categoriaLabel ? (
