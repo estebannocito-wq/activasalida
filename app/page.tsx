@@ -1,5 +1,6 @@
 import Link from "next/link";
 import LandingHeader from "@/components/LandingHeader";
+import LandingMapTeaser from "@/components/map/LandingMapTeaser";
 
 /* ── Datos ──────────────────────────────────────────────────────────────── */
 
@@ -218,6 +219,36 @@ export default function LandingPage() {
               para cualquier plan presencial: deporte, juntada, viaje o lo que se
               te ocurra.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ 2b. EL MAPA (gancho del producto) ═════════════════════════════ */}
+      <section style={{ backgroundColor: "#FFF9F8" }}>
+        <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-rio">
+              El mapa
+            </span>
+            <h2 className="mt-4 text-balance text-3xl font-bold tracking-tight text-noche sm:text-5xl">
+              Mirá qué planes hay cerca tuyo.
+            </h2>
+            <p className="mt-4 text-pretty text-lg leading-relaxed text-tinta/70">
+              Activá la ubicación y descubrí lo que está pasando en tu zona.
+            </p>
+          </div>
+
+          <div className="mt-12">
+            <LandingMapTeaser />
+          </div>
+
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/feed"
+              className="inline-flex h-13 items-center justify-center rounded-2xl bg-rio px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-rio/25 transition hover:brightness-105 active:scale-[0.98]"
+            >
+              Explorar actividades
+            </Link>
           </div>
         </div>
       </section>
