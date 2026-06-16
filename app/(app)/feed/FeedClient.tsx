@@ -10,6 +10,7 @@ import {
 } from "@/lib/format";
 import CapitanBadge from "@/components/CapitanBadge";
 import PortadaCover from "@/components/PortadaCover";
+import FeedMap, { type FeedMapPoint } from "@/components/map/FeedMap";
 
 type Host = {
   nombre: string | null;
@@ -43,17 +44,29 @@ export type SalidaFeed = {
   host: Host | Host[] | null;
 };
 
-type FechaFilter = "todas" | "hoy" | "finde" | "semana" | "mes";
+type RangoFilter = "7d" | "2sem" | "4sem";
 type TransporteFilter = "todas" | "lancha" | "kayak" | "a_pie";
-type GeoState = "idle" | "loading" | "on" | "denied" | "unsupported";
+type Vista = "mapa" | "lista";
 
-const FECHAS: { value: FechaFilter; label: string }[] = [
-  { value: "todas", label: "Todas" },
-  { value: "hoy", label: "Hoy" },
-  { value: "finde", label: "Este finde" },
-  { value: "semana", label: "Esta semana" },
-  { value: "mes", label: "Este mes" },
-];
+// Rosario como centro de respaldo si no hay geolocalización.
+const ROSARIO = { lat: -32.9468, lng: -60.6393 };
+
+const RANGOS: { value: RangoFilter; label: string; dias: number; sufijo: string }[] =
+  [
+    { value: "7d", label: "7 días", dias: 7, sufijo: "en los próximos 7 días" },
+    {
+      value: "2sem",
+      label: "2 semanas",
+      dias: 14,
+      sufijo: "en las próximas 2 semanas",
+    },
+    {
+      value: "4sem",
+      label: "4 semanas",
+      dias: 28,
+      sufijo: "en las próximas 4 semanas",
+    },
+  ];
 
 const TRANSPORTES: { value: TransporteFilter; label: string }[] = [
   { value: "todas", label: "Todas" },
@@ -68,43 +81,11 @@ function getHost(s: SalidaFeed): Host | null {
   return s.host;
 }
 
-function startOfDay(d: Date) {
-  const x = new Date(d);
-  x.setHours(0, 0, 0, 0);
-  return x;
-}
-
-function matchFecha(iso: string, filter: FechaFilter): boolean {
-  if (filter === "todas") return true;
-  const date = new Date(iso);
-  const now = new Date();
-  const today = startOfDay(now);
-  const dowMon = (now.getDay() + 6) % 7; // 0 = lunes … 6 = domingo
-
-  if (filter === "hoy") {
-    const manana = new Date(today);
-    manana.setDate(today.getDate() + 1);
-    return date >= today && date < manana;
-  }
-  if (filter === "finde") {
-    const lunes = new Date(today);
-    lunes.setDate(today.getDate() - dowMon);
-    const sabado = new Date(lunes);
-    sabado.setDate(lunes.getDate() + 5);
-    const proxLunes = new Date(lunes);
-    proxLunes.setDate(lunes.getDate() + 7);
-    return date >= sabado && date < proxLunes;
-  }
-  if (filter === "semana") {
-    const proxLunes = new Date(today);
-    proxLunes.setDate(today.getDate() - dowMon + 7);
-    return date >= today && date < proxLunes;
-  }
-  if (filter === "mes") {
-    const proxMes = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-    return date >= today && date < proxMes;
-  }
-  return true;
+function withinDays(iso: string, dias: number): boolean {
+  const date = new Date(iso).getTime();
+  const now = Date.now();
+  const limite = now + dias * 24 * 60 * 60 * 1000;
+  return date <= limite;
 }
 
 function transporteMatch(t: string, filter: TransporteFilter): boolean {
@@ -147,20 +128,28 @@ function initials(name?: string | null) {
 const PAGE_SIZE = 10;
 
 export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
-  // El feed abre filtrado por "Este finde" por defecto.
-  const [fecha, setFecha] = useState<FechaFilter>("finde");
+  const [rango, setRango] = useState<RangoFilter>("2sem");
+  const [vista, setVista] = useState<Vista>("mapa");
   const [transporte, setTransporte] = useState<TransporteFilter>("todas");
   const [categorias, setCategorias] = useState<string[]>([]);
   const [pos, setPos] = useState<{ lat: number; lng: number } | null>(null);
-  const [geo, setGeo] = useState<GeoState>("idle");
-  const [cerca, setCerca] = useState(false);
   const [showFiltros, setShowFiltros] = useState(false);
-  // Cuántas cards mostrar (paginado de a PAGE_SIZE con "Ver más").
   const [visible, setVisible] = useState(PAGE_SIZE);
 
-  // Filtros activos en el panel desplegable (CÓMO + TIPO).
-  const filtrosActivos =
-    (transporte !== "todas" ? 1 : 0) + categorias.length;
+  const rangoActual = RANGOS.find((r) => r.value === rango)!;
+  const filtrosActivos = (transporte !== "todas" ? 1 : 0) + categorias.length;
+
+  // Geolocalización no bloqueante: pedimos el permiso al montar y, si el
+  // usuario la concede, centramos el mapa y ordenamos por cercanía. Si la
+  // niega o falla, seguimos con Rosario como centro.
+  useEffect(() => {
+    if (typeof navigator === "undefined" || !navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      (p) => setPos({ lat: p.coords.latitude, lng: p.coords.longitude }),
+      () => {},
+      { enableHighAccuracy: true, timeout: 10000 },
+    );
+  }, []);
 
   function toggleCategoria(value: string) {
     setCategorias((prev) =>
@@ -168,36 +157,17 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
     );
   }
 
-  function pedirUbicacion() {
-    if (pos) {
-      setCerca((c) => !c);
-      return;
-    }
-    if (typeof navigator === "undefined" || !navigator.geolocation) {
-      setGeo("unsupported");
-      return;
-    }
-    setGeo("loading");
-    navigator.geolocation.getCurrentPosition(
-      (p) => {
-        setPos({ lat: p.coords.latitude, lng: p.coords.longitude });
-        setCerca(true);
-        setGeo("on");
-      },
-      () => setGeo("denied"),
-      { enableHighAccuracy: true, timeout: 10000 },
-    );
-  }
-
+  // Conjunto base: respeta rango de fecha + filtros secundarios. Manda el
+  // conteo del banner, los pines del mapa y la lista.
   const filtradas = useMemo(() => {
     return salidas.filter((s) => {
-      if (!matchFecha(s.fecha_hora, fecha)) return false;
+      if (!withinDays(s.fecha_hora, rangoActual.dias)) return false;
       if (!transporteMatch(s.transporte, transporte)) return false;
       if (categorias.length > 0 && !categorias.includes(s.categoria ?? ""))
         return false;
       return true;
     });
-  }, [salidas, fecha, transporte, categorias]);
+  }, [salidas, rangoActual.dias, transporte, categorias]);
 
   const conDistancia = useMemo(() => {
     const arr = filtradas.map((s) => ({
@@ -212,7 +182,7 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
             )
           : null,
     }));
-    if (cerca && pos) {
+    if (pos) {
       arr.sort((a, b) => {
         if (a.dist == null && b.dist == null) return 0;
         if (a.dist == null) return 1;
@@ -221,69 +191,88 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
       });
     }
     return arr;
-  }, [filtradas, pos, cerca]);
+  }, [filtradas, pos]);
 
-  // Al cambiar cualquier filtro/orden, volvemos al primer tramo.
+  // Pines del mapa: solo las que tienen coordenadas.
+  const puntos = useMemo<FeedMapPoint[]>(() => {
+    return filtradas
+      .filter(
+        (s) => s.punto_encuentro_lat != null && s.punto_encuentro_lng != null,
+      )
+      .map((s) => ({
+        id: s.id,
+        lat: s.punto_encuentro_lat as number,
+        lng: s.punto_encuentro_lng as number,
+        titulo: s.titulo,
+        fecha: s.fecha_hora,
+        categoriaLabel: categoriaLabel(s.categoria, s.tipo_otro),
+      }));
+  }, [filtradas]);
+
   useEffect(() => {
     setVisible(PAGE_SIZE);
-  }, [fecha, transporte, categorias, cerca, pos]);
+  }, [rango, transporte, categorias, pos]);
 
   const visibles = conDistancia.slice(0, visible);
   const hayMas = conDistancia.length > visible;
-
-  if (salidas.length === 0) {
-    return (
-      <div className="mt-10 rounded-2xl border border-dashed border-tinta/20 bg-white/50 p-8 text-center">
-        <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-rio/15 text-2xl">
-          🎉
-        </div>
-        <h2 className="mt-4 text-lg font-semibold text-noche">
-          Todavía no hay actividades
-        </h2>
-        <p className="mt-2 text-sm text-tinta/60">
-          Sé el primero en armar una y la gente se anota.
-        </p>
-        <Link
-          href="/salida/nueva"
-          className="mt-6 inline-flex h-11 items-center justify-center rounded-2xl bg-rio px-5 text-sm font-semibold text-crema"
-        >
-          Abrí la primera actividad
-        </Link>
-      </div>
-    );
-  }
-
-  const cercaActivo = cerca && !!pos;
+  const count = filtradas.length;
+  const center = pos ?? ROSARIO;
 
   return (
     <div className="mt-6">
-      <div className="-mx-6 px-6">
-        {/* CUÁNDO siempre visible + botón compacto para el resto */}
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex flex-1 flex-wrap gap-2">
-            {FECHAS.map((opt) => {
-              const active = fecha === opt.value;
-              return (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => setFecha(opt.value)}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-                    active
-                      ? "border-rio bg-rio text-crema"
-                      : "border-tinta/15 bg-white text-tinta/70"
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              );
-            })}
-          </div>
+      {/* ── Banner destacado ── */}
+      {count > 0 ? (
+        <div className="flex items-center gap-3 rounded-2xl bg-rio px-4 py-3.5 text-crema shadow-sm shadow-rio/25">
+          <span className="text-2xl" aria-hidden>
+            📍
+          </span>
+          <p className="text-sm font-semibold leading-snug sm:text-base">
+            Tenés {count} {count === 1 ? "actividad" : "actividades"} cerca tuyo{" "}
+            {rangoActual.sufijo}.
+          </p>
+        </div>
+      ) : (
+        <div className="rounded-2xl border border-dashed border-tinta/20 bg-white/60 px-4 py-5 text-center">
+          <p className="text-sm font-semibold text-noche">
+            Todavía no hay actividades cerca tuyo.
+          </p>
+          <p className="mt-1 text-sm text-tinta/60">
+            Sé el primero en crear una.
+          </p>
+          <Link
+            href="/salida/nueva"
+            className="mt-4 inline-flex h-11 items-center justify-center rounded-2xl bg-rio px-5 text-sm font-semibold text-crema active:scale-[0.98]"
+          >
+            Crear actividad
+          </Link>
+        </div>
+      )}
+
+      {/* ── Controles: rango de fecha + toggle Mapa/Lista ── */}
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          {RANGOS.map((opt) => {
+            const active = rango === opt.value;
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => setRango(opt.value)}
+                className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+                  active
+                    ? "border-rio bg-rio text-crema"
+                    : "border-tinta/15 bg-white text-tinta/70"
+                }`}
+              >
+                {opt.label}
+              </button>
+            );
+          })}
           <button
             type="button"
             onClick={() => setShowFiltros((v) => !v)}
             aria-expanded={showFiltros}
-            className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+            className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
               showFiltros || filtrosActivos > 0
                 ? "border-rio bg-rio/10 text-rio"
                 : "border-tinta/15 bg-white text-tinta/70"
@@ -294,122 +283,105 @@ export default function FeedClient({ salidas }: { salidas: SalidaFeed[] }) {
           </button>
         </div>
 
-        {showFiltros ? (
-          <div className="mt-3 space-y-2 rounded-2xl border border-tinta/10 bg-white/60 p-3">
-            <ChipGroup
-              label="Cómo"
-              value={transporte}
-              onChange={(v) => setTransporte(v as TransporteFilter)}
-              options={TRANSPORTES}
-            />
-            <MultiChipGroup
-              label="Tipo"
-              selected={categorias}
-              onToggle={toggleCategoria}
-              onClear={() => setCategorias([])}
-              options={CATEGORIAS}
-            />
-          </div>
-        ) : null}
-      </div>
-
-      <div className="mt-4 flex items-center gap-2">
-        <button
-          type="button"
-          onClick={pedirUbicacion}
-          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
-            cercaActivo
-              ? "border-rio bg-rio text-crema"
-              : "border-tinta/15 bg-white text-tinta/70"
-          }`}
-        >
-          <svg
-            viewBox="0 0 24 24"
-            className="h-3.5 w-3.5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
+        {/* Switch Mapa | Lista */}
+        <div className="inline-flex rounded-full border border-tinta/15 bg-white p-0.5">
+          <button
+            type="button"
+            onClick={() => setVista("mapa")}
+            className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+              vista === "mapa" ? "bg-rio text-crema" : "text-tinta/60"
+            }`}
           >
-            <path d="M12 22s8-4.5 8-11a8 8 0 1 0-16 0c0 6.5 8 11 8 11z" />
-            <circle cx="12" cy="11" r="2.5" />
-          </svg>
-          {geo === "loading"
-            ? "Buscando…"
-            : cercaActivo
-              ? "Cerca mío ✓"
-              : "Cerca mío"}
-        </button>
-        {geo === "denied" ? (
-          <span className="text-xs text-tinta/50">
-            No pudimos acceder a tu ubicación.
-          </span>
-        ) : null}
-        {geo === "unsupported" ? (
-          <span className="text-xs text-tinta/50">
-            Tu navegador no comparte ubicación.
-          </span>
-        ) : null}
+            🗺️ Mapa
+          </button>
+          <button
+            type="button"
+            onClick={() => setVista("lista")}
+            className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+              vista === "lista" ? "bg-rio text-crema" : "text-tinta/60"
+            }`}
+          >
+            ☰ Lista
+          </button>
+        </div>
       </div>
 
-      <p className="mt-4 text-sm font-medium text-tinta/60">
-        {conDistancia.length}{" "}
-        {conDistancia.length === 1 ? "actividad" : "actividades"}
-        {cercaActivo ? " · más cercanas primero" : ""}
-      </p>
+      {showFiltros ? (
+        <div className="mt-3 space-y-2 rounded-2xl border border-tinta/10 bg-white/60 p-3">
+          <ChipGroup
+            label="Cómo"
+            value={transporte}
+            onChange={(v) => setTransporte(v as TransporteFilter)}
+            options={TRANSPORTES}
+          />
+          <MultiChipGroup
+            label="Tipo"
+            selected={categorias}
+            onToggle={toggleCategoria}
+            onClear={() => setCategorias([])}
+            options={CATEGORIAS}
+          />
+        </div>
+      ) : null}
 
-      {conDistancia.length === 0 ? (
-        fecha === "finde" ? (
-          <div className="mt-3 rounded-2xl border border-dashed border-tinta/15 bg-white/50 px-4 py-8 text-center">
-            <p className="text-sm text-tinta/60">
-              No hay actividades este finde. Mirá las de esta semana.
-            </p>
-            <button
-              type="button"
-              onClick={() => setFecha("semana")}
-              className="mt-3 inline-flex h-10 items-center justify-center rounded-2xl bg-rio px-5 text-sm font-semibold text-crema active:scale-[0.98]"
-            >
-              Ver las de esta semana
-            </button>
-          </div>
-        ) : (
-          <div className="mt-3 rounded-2xl border border-dashed border-tinta/15 bg-white/50 px-4 py-8 text-center">
-            <p className="text-sm text-tinta/60">
-              Ninguna actividad coincide con esos filtros.
-            </p>
-            <button
-              type="button"
-              onClick={() => {
-                setFecha("todas");
-                setTransporte("todas");
-                setCategorias([]);
-              }}
-              className="mt-3 text-sm font-semibold text-rio"
-            >
-              Limpiar filtros
-            </button>
-          </div>
-        )
+      {/* ── Vista MAPA ── */}
+      {vista === "mapa" ? (
+        <div className="mt-4">
+          <FeedMap center={center} userPos={pos} points={puntos} />
+          <p className="mt-2 text-center text-xs text-tinta/50">
+            {puntos.length}{" "}
+            {puntos.length === 1 ? "actividad ubicada" : "actividades ubicadas"}{" "}
+            en el mapa
+            {puntos.length < count
+              ? ` · ${count - puntos.length} sin ubicación (mirá la lista)`
+              : ""}
+          </p>
+        </div>
       ) : (
-        <>
-          <ul className="mt-3 space-y-2.5">
-            {visibles.map(({ salida, dist }) => (
-              <li key={salida.id}>
-                <SalidaCard salida={salida} distanciaKm={dist} />
-              </li>
-            ))}
-          </ul>
-          {hayMas ? (
-            <button
-              type="button"
-              onClick={() => setVisible((v) => v + PAGE_SIZE)}
-              className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-2xl border border-tinta/15 bg-white text-sm font-semibold text-tinta/70 active:scale-[0.98]"
-            >
-              Ver más ({conDistancia.length - visible} más)
-            </button>
-          ) : null}
-        </>
+        /* ── Vista LISTA ── */
+        <div className="mt-4">
+          <p className="text-sm font-medium text-tinta/60">
+            {count} {count === 1 ? "actividad" : "actividades"}
+            {pos ? " · más cercanas primero" : ""}
+          </p>
+          {count === 0 ? (
+            <div className="mt-3 rounded-2xl border border-dashed border-tinta/15 bg-white/50 px-4 py-8 text-center">
+              <p className="text-sm text-tinta/60">
+                Ninguna actividad coincide con esos filtros.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setRango("4sem");
+                  setTransporte("todas");
+                  setCategorias([]);
+                }}
+                className="mt-3 text-sm font-semibold text-rio"
+              >
+                Ampliar a 4 semanas y limpiar filtros
+              </button>
+            </div>
+          ) : (
+            <>
+              <ul className="mt-3 space-y-2.5">
+                {visibles.map(({ salida, dist }) => (
+                  <li key={salida.id}>
+                    <SalidaCard salida={salida} distanciaKm={dist} />
+                  </li>
+                ))}
+              </ul>
+              {hayMas ? (
+                <button
+                  type="button"
+                  onClick={() => setVisible((v) => v + PAGE_SIZE)}
+                  className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-2xl border border-tinta/15 bg-white text-sm font-semibold text-tinta/70 active:scale-[0.98]"
+                >
+                  Ver más ({count - visible} más)
+                </button>
+              ) : null}
+            </>
+          )}
+        </div>
       )}
     </div>
   );
@@ -549,7 +521,6 @@ function SalidaCard({
   const reputacion = Number(host?.reputacion_promedio ?? 0);
   const tipoLabel = categoriaLabel(salida.categoria, salida.tipo_otro);
 
-  // Restricción de edad: badge discreto (no esconde la salida del feed).
   let edadBadge: string | null = null;
   if (salida.edad_min != null && salida.edad_max != null) {
     edadBadge = `Edad ${salida.edad_min}-${salida.edad_max}`;
@@ -564,8 +535,6 @@ function SalidaCard({
       href={`/salida/${salida.id}`}
       className="flex gap-3 overflow-hidden rounded-2xl bg-white p-2.5 shadow-sm transition active:scale-[0.99]"
     >
-      {/* Thumbnail cuadrado: portada (foto o fallback de marca). El banner
-          grande 16:9 queda solo en el detalle de la salida. */}
       <div className="relative h-[92px] w-[92px] shrink-0 overflow-hidden rounded-xl">
         <PortadaCover
           imagenPortada={salida.imagen_portada}
@@ -577,9 +546,7 @@ function SalidaCard({
         />
       </div>
 
-      {/* Info a la derecha, en columna */}
       <div className="flex min-w-0 flex-1 flex-col justify-center">
-        {/* Fila 1: badge tipo + badge estado (+ edad) */}
         <div className="flex items-center gap-1.5">
           {tipoLabel ? (
             <span className="inline-flex max-w-[55%] items-center truncate rounded-full bg-rio/10 px-2 py-0.5 text-[11px] font-semibold text-rio">
@@ -598,7 +565,6 @@ function SalidaCard({
           ) : null}
         </div>
 
-        {/* Fila 2: host + rating */}
         <div className="mt-1 flex items-center gap-1.5">
           <span className="grid h-5 w-5 shrink-0 place-items-center overflow-hidden rounded-full bg-rio text-[9px] font-bold text-crema">
             {host?.foto_url ? (
@@ -624,12 +590,10 @@ function SalidaCard({
           </span>
         </div>
 
-        {/* Fila 3: título */}
         <h3 className="mt-1 truncate text-sm font-semibold leading-tight text-noche">
           {salida.titulo}
         </h3>
 
-        {/* Fila 4: fecha · lugar (una línea) */}
         <div className="mt-1 flex items-center gap-1 text-[11px] text-tinta/60">
           <span aria-hidden>📅</span>
           <span className="shrink-0">{formatFechaCorta(salida.fecha_hora)}</span>
@@ -649,7 +613,6 @@ function SalidaCard({
           ) : null}
         </div>
 
-        {/* Fila 5: disponibilidad + costo */}
         <div className="mt-1.5 flex items-center gap-2">
           <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-tinta/10">
             <div
