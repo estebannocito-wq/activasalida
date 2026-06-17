@@ -269,7 +269,12 @@ export async function createSalidaAction(formData: FormData): Promise<Result> {
     .single();
 
   if (error || !data) {
-    return { error: error?.message ?? "No pudimos publicar la actividad." };
+    // Logueamos el error real (columna faltante, RLS, etc.) para debug,
+    // pero al usuario le mostramos un mensaje genérico en español.
+    console.error("[createSalidaAction] error al insertar salida:", error);
+    return {
+      error: "No pudimos publicar la actividad. Probá de nuevo en un momento.",
+    };
   }
 
   redirect(`/salida/${data.id}?nueva=1`);
@@ -354,7 +359,10 @@ export async function updateSalidaAction(
     .eq("id", salidaId);
 
   if (error) {
-    return { error: error.message ?? "No pudimos guardar los cambios." };
+    console.error("[updateSalidaAction] error al actualizar salida:", error);
+    return {
+      error: "No pudimos guardar los cambios. Probá de nuevo en un momento.",
+    };
   }
 
   revalidatePath(`/salida/${salidaId}`);
