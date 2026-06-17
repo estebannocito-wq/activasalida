@@ -24,7 +24,7 @@ export default function LandingHeader() {
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3.5 sm:gap-4 sm:px-6">
-        <Link href="/" className="flex min-w-0 shrink items-center gap-2 sm:gap-3">
+        <Link href="/" className="flex shrink-0 items-center gap-2 sm:gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/brand/isotipo.png"
@@ -32,7 +32,7 @@ export default function LandingHeader() {
             className="h-9 w-auto sm:h-[56px]"
             height={56}
           />
-          <span className="truncate text-2xl font-extrabold tracking-tight sm:text-4xl">
+          <span className="whitespace-nowrap text-2xl font-extrabold tracking-tight sm:text-4xl">
             <span style={{ color: "#F4552E" }}>activa</span>
             <span style={{ color: "#1E2A78" }}>salida</span>
           </span>
@@ -41,7 +41,7 @@ export default function LandingHeader() {
         <nav className="flex shrink-0 items-center gap-2 sm:gap-4">
           <Link
             href="/login"
-            className="text-sm font-semibold text-noche/80 transition hover:text-noche"
+            className="hidden text-sm font-semibold text-noche/80 transition hover:text-noche sm:inline"
           >
             Iniciar sesion
           </Link>
