@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { GENEROS, calcularEdad } from "@/lib/format";
 import { rateLimit } from "@/lib/rateLimit";
+import { mapAuthError } from "@/lib/authErrors";
 
 function safeRedirect(value: FormDataEntryValue | null) {
   const s = String(value ?? "").trim();
@@ -84,7 +85,7 @@ export async function signUpAction(formData: FormData) {
         emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/completar-perfil${redirectTo ? `?redirect=${encodeURIComponent(redirectTo)}` : ""}`,
       },
     });
-    errorMessage = error?.message ?? null;
+    errorMessage = error ? mapAuthError(error.message) : null;
     newUserId = data?.user?.id ?? null;
   } catch (err) {
     // No dejamos que una excepción (ej. URL/clave de Supabase mal cargada en

@@ -9,12 +9,13 @@ import {
   ensureSalidasBucket,
 } from "@/lib/supabase/admin";
 
+// Debe coincidir EXACTAMENTE con los values del form (NuevaSalidaForm.tsx)
+// y con TRANSPORTE_LABEL en lib/format.ts.
 const TRANSPORTES = [
-  "lancha_publica",
-  "lancha_privada",
-  "lancha_taxi",
-  "kayak",
+  "auto",
+  "transporte_publico",
   "a_pie",
+  "bici",
   "otro",
 ] as const;
 

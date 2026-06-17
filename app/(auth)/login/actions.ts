@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { mapAuthError } from "@/lib/authErrors";
 
 export async function signInAction(formData: FormData) {
   const email = String(formData.get("email") ?? "").trim();
@@ -20,7 +21,7 @@ export async function signInAction(formData: FormData) {
       email,
       password,
     });
-    errorMessage = error?.message ?? null;
+    errorMessage = error ? mapAuthError(error.message) : null;
     userId = data?.user?.id ?? null;
   } catch (err) {
     // Evita el 500 sin mensaje si Supabase no responde o las env vars del

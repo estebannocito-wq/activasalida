@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthCard from "@/components/AuthCard";
 import { createClient } from "@/lib/supabase/client";
+import { mapAuthError } from "@/lib/authErrors";
 
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState("");
@@ -35,7 +36,7 @@ export default function ResetPasswordPage() {
       setError(
         /session|missing|expired/i.test(updErr.message)
           ? "El link venció o ya se usó. Pedí uno nuevo desde 'Olvidé mi contraseña'."
-          : updErr.message,
+          : mapAuthError(updErr.message),
       );
       return;
     }

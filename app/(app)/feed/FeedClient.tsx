@@ -45,7 +45,12 @@ export type SalidaFeed = {
 };
 
 type RangoFilter = "7d" | "2sem" | "4sem";
-type TransporteFilter = "todas" | "lancha" | "kayak" | "a_pie";
+type TransporteFilter =
+  | "todas"
+  | "auto"
+  | "transporte_publico"
+  | "a_pie"
+  | "bici";
 type Vista = "mapa" | "lista";
 
 // Rosario como centro de respaldo si no hay geolocalización.
@@ -82,9 +87,10 @@ const RANGOS: { value: RangoFilter; label: string; dias: number; sufijo: string 
 
 const TRANSPORTES: { value: TransporteFilter; label: string }[] = [
   { value: "todas", label: "Todas" },
-  { value: "lancha", label: "Auto" },
-  { value: "kayak", label: "Transporte público" },
+  { value: "auto", label: "Auto" },
+  { value: "transporte_publico", label: "Transporte público" },
   { value: "a_pie", label: "A pie" },
+  { value: "bici", label: "Bici" },
 ];
 
 function getHost(s: SalidaFeed): Host | null {
@@ -102,7 +108,6 @@ function withinDays(iso: string, dias: number): boolean {
 
 function transporteMatch(t: string, filter: TransporteFilter): boolean {
   if (filter === "todas") return true;
-  if (filter === "lancha") return t?.startsWith("lancha");
   return t === filter;
 }
 
@@ -690,7 +695,7 @@ function SalidaCard({
             />
           </div>
           <span className="shrink-0 text-[11px] text-tinta/60">
-            {cuposLibres}/{salida.cupos_total}
+            {salida.cupos_ocupados ?? 0}/{salida.cupos_total}
           </span>
           {total > 0 ? (
             <span className="shrink-0 text-[11px] font-semibold text-rio">
